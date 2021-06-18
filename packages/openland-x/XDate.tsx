@@ -3,7 +3,7 @@ import * as humanize from 'humanize';
 import moment from 'moment-timezone';
 import { canUseDOM } from 'openland-y-utils/canUseDOM';
 import { XStorageContext } from 'openland-x-routing/XStorageContext';
-import { formatBirthDay } from 'openland-y-utils/wallet/dateTime';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 let months = [
     'Jan',
@@ -123,7 +123,7 @@ export function XDate(props: XDateProps) {
         }
 
     } else if (format === 'birthDay') {
-        return <span>{formatBirthDay(date)}</span>;
+        return <span>{DateTimeFormatter.formatBirthDay(date)}</span>;
     } else {
         let dt = new Date(date);
         let year = dt.getFullYear().toString();

@@ -13,7 +13,6 @@ import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { showModalBox } from 'openland-x/showModalBox';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
-import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption } from 'openland-web/utils/TextStyles';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { XLoader } from 'openland-x/XLoader';
@@ -28,6 +27,9 @@ import IcForward from 'openland-icons/s/ic-forward-24.svg';
 import IcClose from 'openland-icons/s/ic-close-24.svg';
 import IcLeft from 'openland-icons/s/ic-back-24.svg';
 import IcRight from 'openland-icons/s/ic-next-24.svg';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatDateTime } = DateTimeFormatter;
 
 const modalImgContainer = css`
     position: relative;
@@ -327,17 +329,17 @@ const ModalContent = React.memo((props: ModalProps & { hide: () => void }) => {
         current.length && index !== undefined
             ? current[index]
             : {
-                  fileId: fileId,
-                  imageWidth: imageWidth,
-                  imageHeight: imageHeight,
-                  filePreview: filePreview!,
-                  date: props.date!,
-                  senderName: (props.senderNameEmojify
-                      ? props.senderNameEmojify
-                      : props.sender
-                      ? emoji(props.sender.name)
-                      : '') as string,
-              };
+                fileId: fileId,
+                imageWidth: imageWidth,
+                imageHeight: imageHeight,
+                filePreview: filePreview!,
+                date: props.date!,
+                senderName: (props.senderNameEmojify
+                    ? props.senderNameEmojify
+                    : props.sender
+                        ? emoji(props.sender.name)
+                        : '') as string,
+            };
 
     React.useEffect(() => {
         if (index === undefined && current.length > 0) {

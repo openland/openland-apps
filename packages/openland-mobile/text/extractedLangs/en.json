@@ -122,7 +122,7 @@
   "createOrganizationSecret": "Secret",
   "createOrganizationSecretDescription": "Only people with invite link can see it",
   "custom": "Custom",
-  "dateTime": "Date and time",
+  "dateAndTime": "Date and time",
   "day": "Day",
   "defaultGroups": "Default groups",
   "defaultGroupsDescription": "Select groups that will be automatically joined by all new community members",
@@ -384,8 +384,8 @@
   "organization": "Organization",
   "organizationDescription": "Publicly describe this organization for all to see",
   "organizationShortname": "People will be able to find your organization by this shortname",
-  "organizationWithMember": "Organization   ·  {{count}} t(member)",
-  "organizationWithMember_plural": "Organization   ·  {{count}} t(member_plural)",
+  "organizationWithMember": "Organization   ·  {{count}} $t(member)",
+  "organizationWithMember_plural": "Organization   ·  {{count}} $t(member_plural)",
   "other": "Other",
   "pairAccount": "You can pair your account to any {{source}} and use it for login",
   "payChoosePaymentMethod": "Choose correct payment method or add a new one to complete transaction",
@@ -658,5 +658,20 @@
   "yourBalance": "Your balance",
   "yourEmail": "Your email",
   "yourMessaage": "Your message",
-  "yourPhone": "Your phone"
+  "yourPhone": "Your phone",
+  "dateTime": {
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "now": "now",
+    "at": "at",
+    "shortMinute": "m",
+    "shortHour": "h",
+    "shortDay": "d",
+    "justNow": "just now",
+    "lastSeenYesterday": "last seen yesterday",
+    "lastSeenTwoDays": "last seen two days ago",
+    "lastSeenLongTime": "last seen long time ago",
+    "lastSeenDefault": "last seen",
+    "yearsOldShort": "y. o."
+  }
 }

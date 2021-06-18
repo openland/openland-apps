@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { TextStyle, Text, TextProps } from 'react-native';
-import { formatLastSeen } from 'openland-y-utils/formatTime';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
+const { formatLastSeen } = DateTimeFormatter;
 interface PresenceComponentProps extends TextProps {
     uid: string;
     isBot?: boolean;

@@ -27,7 +27,6 @@ import { FullMessage_GeneralMessage_attachments_MessageAttachmentFile, MessageRe
 import { ZModalController } from 'openland-mobile/components/ZModal';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showReactionsList } from 'openland-mobile/components/message/showReactionsList';
-import { formatDateTime } from 'openland-y-utils/formatTime';
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { NotificationCenterItemAsync } from 'openland-mobile/notificationCenter/NotificationCenterItemAsync';
 import { NotificationsDataSourceItem } from 'openland-engines/NotificationCenterEngine';
@@ -51,6 +50,7 @@ import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/N
 import { DataSource } from 'openland-y-utils/DataSource';
 import { AsyncInvitePeopleBlock } from './components/AsyncInvitePeopleBlock';
 import { t } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
@@ -314,7 +314,7 @@ export class MobileMessenger {
     handleMediaPress = (fileMeta: { imageWidth: number, imageHeight: number }, event: { path: string } & ASPressEvent, radius?: number, senderName?: string, date?: number) => {
         showPictureModal({
             title: senderName,
-            subtitle: date ? formatDateTime(date) : undefined,
+            subtitle: date ? DateTimeFormatter.formatDateTime(date) : undefined,
             url: (Platform.OS === 'android' ? 'file://' : '') + event.path,
             width: fileMeta.imageWidth,
             height: fileMeta.imageHeight,

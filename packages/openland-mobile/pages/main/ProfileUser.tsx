@@ -18,7 +18,6 @@ import { SHeader } from 'react-native-s/SHeader';
 import { findSocialShortname } from 'openland-y-utils/findSocialShortname';
 import { useLastSeenShort } from 'openland-y-utils/LastSeen';
 import { ProfileDeleted } from './components/ProfileDeleted';
-import { formatAbsoluteDate, formatBirthDay } from 'openland-y-utils/wallet/dateTime';
 import { openMapsApp } from 'openland-mobile/utils/openMapsApp';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { useUserBanInfo } from 'openland-y-utils/blacklist/LocalBlackList';
@@ -37,6 +36,9 @@ import { UserPhotoUploaderNew } from './components/UserPhotoUploaderNew';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { CurrentVoiceChat } from './components/CurrentVoiceChat';
 import { capitalize, useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatAbsoluteDate, formatBirthDay } = DateTimeFormatter;
 
 const ProfileUserComponent = React.memo((props: PageProps) => {
     const client = getClient();

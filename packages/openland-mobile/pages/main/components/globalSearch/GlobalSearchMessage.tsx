@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { TouchableHighlight, View, Text, Image } from 'react-native';
 import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
-import { formatDate } from 'openland-mobile/utils/formatDate';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { MessagesSearch_messagesSearch_edges_node } from 'openland-api/spacex.types';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 interface GlobalSearchMessageProps {
     item: MessagesSearch_messagesSearch_edges_node;
@@ -53,7 +53,7 @@ export const GlobalSearchMessage = React.memo<GlobalSearchMessageProps>((props) 
                             )}
                         </View>
                         <View style={{ marginLeft: 10, marginTop: 3 }}>
-                            <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }} allowFontScaling={false}>{formatDate(date)}</Text>
+                            <Text style={{ ...TextStyles.Caption, color: theme.foregroundTertiary }} allowFontScaling={false}>{DateTimeFormatter.formatDate(date)}</Text>
                         </View>
                     </View>
                     <View style={{ flexDirection: 'row', alignItems: 'stretch', height: 40 }}>

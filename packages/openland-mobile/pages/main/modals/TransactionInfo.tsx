@@ -87,7 +87,7 @@ const TransactionInfo = React.memo<TransactionInfoProps & { ctx: ModalProps }>((
                     </>
                 )}
                 {paymentMethod && !hasSplittedAmount && <InfoItem name={t('paymentMethod', 'Payment method')} value={paymentMethod} />}
-                <InfoItem name={t('dateTime', 'Date and time')} value={`${dateTime.date}, ${dateTime.time}`} />
+                <InfoItem name={t('dateAndTime', 'Date and time')} value={`${dateTime.date}, ${dateTime.time}`} />
                 <InfoItem name={t('status', 'Status')} status={status} />
             </View>
         </View>

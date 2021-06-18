@@ -4,7 +4,6 @@ import { ASText } from 'react-native-async-view/ASText';
 import { Platform } from 'react-native';
 import { ASAvatar } from './ASAvatar';
 import { FontStyles, TextStylesAsync, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
-import { formatDate } from 'openland-mobile/utils/formatDate';
 import { DialogDataSourceItem } from 'openland-engines/messenger/DialogListEngine';
 import { UserAvatar } from './UserAvatar';
 import { ASImage } from 'react-native-async-view/ASImage';
@@ -16,6 +15,7 @@ import { getCounterValue } from 'openland-y-utils/getCounterValue';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showDialogMenu } from './DialogMenu';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 const ASCounter = (props: { value: number | string; muted?: boolean; theme: ThemeGlobal }) => {
     const { t } = useText();
@@ -188,7 +188,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                         {...TextStylesAsync.Caption}
                                         color={theme.foregroundTertiary}
                                     >
-                                        {formatDate(item.date)}
+                                        {DateTimeFormatter.formatDate(item.date)}
                                     </ASText>
                                 )}
                             </ASFlex>

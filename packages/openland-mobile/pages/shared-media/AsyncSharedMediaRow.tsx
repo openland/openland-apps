@@ -6,12 +6,14 @@ import { useThemeGlobal } from 'openland-mobile/themes/ThemeContext';
 import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { ASPressEvent } from 'react-native-async-view/ASPressEvent';
 import { showPictureModal } from 'openland-mobile/components/modal/ZPictureModal';
-import { formatDateTime } from 'openland-y-utils/formatTime';
 import { RNAsyncConfigManager } from 'react-native-async-view/platform/ASConfigManager';
 import { showFileModal } from 'openland-mobile/components/file/showFileModal';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { DataSourceSharedMediaRow } from 'openland-engines/messenger/SharedMediaEngine';
 import { ASFlex } from 'react-native-async-view/ASFlex';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatDateTime } = DateTimeFormatter;
 
 interface AsyncMediaItemProps {
     index: number;
@@ -35,7 +37,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
         const d = DownloadManagerInstance.watch(attachment.fileId, fullScreenSize, state => {
 
             if (state.path) {
-                fsPathRef.current = Platform.select({ios: state.path, android: 'file://' + state.path});
+                fsPathRef.current = Platform.select({ ios: state.path, android: 'file://' + state.path });
             }
         });
         const srcImgSize = Math.round(imageSize * PixelRatio.get());
@@ -101,7 +103,7 @@ const AsyncFileItem = React.memo(({ message, attachment, index, imageSize, chatI
     }, []);
 
     const handleLongPress = React.useCallback(() => {
-        onLongPress({ filePath: Platform.select({ios: previewPath, android: 'file://' + previewPath }), message, chatId });
+        onLongPress({ filePath: Platform.select({ ios: previewPath, android: 'file://' + previewPath }), message, chatId });
     }, [previewPath]);
 
     const url = 'file://' + previewPath || attachment.filePreview || undefined;

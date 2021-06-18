@@ -1,6 +1,8 @@
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import * as React from 'react';
 import { Text, TextProps } from 'react-native';
-import { formatRelativeTimeShort } from 'openland-y-utils/formatTime';
+
+const { formatRelativeTimeShort } = DateTimeFormatter;
 
 interface ZRelativeDateProps extends TextProps {
     date: string | number;
