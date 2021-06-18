@@ -29,5 +29,6 @@ i18n
         }
     });
 
+// moment.locale('ru');
 // moment.locale(getLocale());
 // i18n.on('languageChanged', lng => moment.locale(lng));
