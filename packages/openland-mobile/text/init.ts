@@ -1,5 +1,7 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+// import moment from 'moment';
+// import 'moment/locale/ru';
 import en from 'openland-mobile/text/extractedLangs/en.json';
 // import { getLocale } from './utils';
 // import ru from 'openland-mobile/text/extractedLangs/ru.json';
@@ -26,3 +28,6 @@ i18n
             transSupportBasicHtmlNodes: true,
         }
     });
+
+// moment.locale(getLocale());
+// i18n.on('languageChanged', lng => moment.locale(lng));

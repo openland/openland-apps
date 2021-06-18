@@ -1,5 +1,7 @@
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import * as React from 'react';
-import { formatRelativeTime } from 'openland-y-utils/formatTime';
+
+const { formatRelativeTime } = DateTimeFormatter;
 
 interface URelativeDateProps {
     date: string | number;

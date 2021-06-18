@@ -1,7 +1,7 @@
 import { WalletTransactionFragment, WalletSubscriptionInterval, PaymentStatus, WalletTransactionStatus } from 'openland-api/spacex.types';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 import { getPaymentMethodName } from 'openland-y-utils/wallet/brands';
-import { extractDateTime } from 'openland-y-utils/wallet/dateTime';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 export type TransactionConvertedStatus = 'pending' | 'failing' | 'canceled' | 'success';
 export interface TransactionConverted {
@@ -35,7 +35,7 @@ export const convertTransaction = (transaction: WalletTransactionFragment) => {
         title: '',
         type: 'basic',
         interval: undefined,
-        dateTime: extractDateTime(transaction.date),
+        dateTime: DateTimeFormatter.extractDateTime(transaction.date),
         paymentMethod: undefined,
         amount: formatTransactionMoney(transaction.operation.amount),
         status: 'pending',

@@ -1,7 +1,5 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TextStyle, TouchableOpacity, View, ViewStyle } from 'react-native';
-
-import { EMPTY_YEAR, getValidatedDate, isValidDate } from 'openland-y-utils/wallet/dateTime';
 import { FormField } from 'openland-form/useField';
 
 import { ZInput } from './ZInput';
@@ -9,6 +7,10 @@ import { ZSelectBasic } from './ZSelect';
 import { HighlightAlpha, TextStyles } from '../styles/AppStyles';
 import { ThemeContext } from '../themes/ThemeContext';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { getEmptyYear, getValidatedDate, isValidDate } = DateTimeFormatter;
+const EMPTY_YEAR = getEmptyYear();
 
 const styles = StyleSheet.create({
     errorContainer: {

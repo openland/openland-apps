@@ -8,7 +8,6 @@ import { View, Text } from 'react-native';
 import { ReactionsView } from 'openland-mobile/components/message/content/ReactionsView';
 import { SHeaderView } from 'react-native-s/SHeaderView';
 import { EntityHeader } from './components/EntityHeader';
-import { formatDateAtTime } from 'openland-y-utils/formatTime';
 import {
     Message_message,
     Message_message_GeneralMessage_source_MessageSourceChat_chat_PrivateRoom,
@@ -20,6 +19,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { HighlightAlpha, TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatDateAtTime } = DateTimeFormatter;
 
 // remove after adding isDeleted flag in API
 const isMessageDeleted = (message: Message_message) => {

@@ -4,12 +4,15 @@ import { css, cx } from 'linaria';
 
 import { TextBody, TextCaption } from 'openland-web/utils/TextStyles';
 import { FormField } from 'openland-form/useField';
-import { EMPTY_YEAR, getValidatedDate, isValidDate } from 'openland-y-utils/wallet/dateTime';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 import ClearIcon from 'openland-icons/s/ic-delete-16.svg';
 
 import { UInput } from './UInput';
 import { USelect } from './USelect';
+
+const { getEmptyYear, getValidatedDate, isValidDate } = DateTimeFormatter;
+const EMPTY_YEAR = getEmptyYear();
 
 const inputErrorStyle = css`
     color: var(--tintRed);
@@ -104,7 +107,7 @@ export const UDateInput = React.memo(({ value, invalid, onChange }: UDateInputPr
         setMonth(null);
         setYear('');
     }, []);
-    
+
     const getInvalid = React.useCallback((field: 'day' | 'month' | 'year'): boolean => {
         if (field === 'day') {
             return Boolean(invalid && (month || Number(day) > 31));

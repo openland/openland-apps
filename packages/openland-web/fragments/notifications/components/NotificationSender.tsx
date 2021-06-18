@@ -3,9 +3,11 @@ import { css, cx } from 'linaria';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { FullMessage_GeneralMessage_sender, RoomNano_SharedRoom } from 'openland-api/spacex.types';
 import { ULink } from 'openland-web/components/unicorn/ULink';
-import { formatTime } from 'openland-y-utils/formatTime';
 import GroupReplyIcon from 'openland-icons/s/ic-chevron-16.svg';
 import { UIcon } from 'openland-web/components/unicorn/UIcon';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatTime } = DateTimeFormatter;
 
 const wrapperClass = css`
     display: flex;
@@ -61,7 +63,7 @@ export const NotificationSender = React.memo((props: NotificationSenderProps) =>
             {group && (
                 <>
                     <div className={iconWrapper}>
-                        <UIcon icon={<GroupReplyIcon />} color="var(--foregroundTertiary)" size={14}/>
+                        <UIcon icon={<GroupReplyIcon />} color="var(--foregroundTertiary)" size={14} />
                     </div>
 
                     <ULink path={`/mail/${group.id}`} className={cx(TextLabel1, linkClass)}>

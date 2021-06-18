@@ -19,8 +19,8 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { KeyboardAvoidingScrollView } from 'openland-mobile/components/KeyboardAvoidingScrollView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { formatPhone } from 'openland-y-utils/auth/formatPhone';
-import { isValidDate } from 'openland-y-utils/wallet/dateTime';
 import { useText } from 'openland-mobile/text/useText';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 const PrivacyLink = React.memo((props: { router: SRouter }) => {
     const theme = useTheme();
@@ -59,7 +59,7 @@ const SettingsProfileContent = React.memo((props: PageProps) => {
     const emailField = useField('email', email || '', form);
     const birthDayField = useField('input.birthDay', birthDay || null, form, [
         {
-            checkIsValid: (value) => !value || isValidDate(value),
+            checkIsValid: (value) => !value || DateTimeFormatter.isValidDate(value),
             text: t('validationDate', 'Please enter valid date'),
         },
     ]);

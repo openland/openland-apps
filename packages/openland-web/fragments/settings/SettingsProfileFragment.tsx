@@ -19,7 +19,7 @@ import { UHeader } from 'openland-unicorn/UHeader';
 import { useLayout } from 'openland-unicorn/components/utils/LayoutContext';
 import { AppConfig } from 'openland-y-runtime/AppConfig';
 import { UDateInputField } from 'openland-web/components/unicorn/UDateInput';
-import { isValidDate } from 'openland-y-utils/wallet/dateTime';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 const privacyText = css`
     margin-bottom: 24px;
@@ -79,7 +79,7 @@ export const SettingsProfileFragment = React.memo(() => {
     ]);
     const birthDayField = useField('input.birthDay', birthDay || null, form, [
         {
-            checkIsValid: (value) => !value || isValidDate(value),
+            checkIsValid: (value) => !value || DateTimeFormatter.isValidDate(value),
             text: '',
         },
     ]);

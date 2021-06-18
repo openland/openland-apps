@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { formatLastSeen, formatLastSeenShort } from 'openland-y-utils/formatTime';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatLastSeen, formatLastSeenShort } = DateTimeFormatter;
 
 export interface LastSeenUser {
     id: string;

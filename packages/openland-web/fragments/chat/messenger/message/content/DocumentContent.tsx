@@ -2,7 +2,6 @@ import * as React from 'react';
 import { css, cx } from 'linaria';
 import { showModalBox } from 'openland-x/showModalBox';
 import { formatBytes } from 'openland-y-utils/formatBytes';
-import { formatDateTime } from 'openland-y-utils/formatTime';
 import { TextCaption, TextLabel1 } from 'openland-web/utils/TextStyles';
 import { showChatPicker } from 'openland-web/fragments/chat/showChatPicker';
 import { MessengerContext } from 'openland-engines/MessengerEngine';
@@ -22,6 +21,9 @@ import { MediaLoader } from './MediaLoader';
 import { layoutMedia } from 'openland-y-utils/MediaLayout';
 import { isChrome } from 'openland-y-utils/isChrome';
 import { isAudio } from 'openland-y-utils/mediaExtension';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatDateTime } = DateTimeFormatter;
 
 const modalContainer = css`
     position: relative;

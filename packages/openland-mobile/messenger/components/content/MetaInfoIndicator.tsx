@@ -4,9 +4,9 @@ import { ASText } from 'react-native-async-view/ASText';
 import { ASFlex } from 'react-native-async-view/ASFlex';
 import { ASImage } from 'react-native-async-view/ASImage';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
-import { formatTime } from 'openland-y-utils/formatTime';
 import { TextStylesAsync, CompensationAlpha } from 'openland-mobile/styles/AppStyles';
 import { Platform } from 'react-native';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 interface LabelProps {
     date: number;
@@ -35,7 +35,7 @@ const Label = React.memo((props: LabelProps) => {
                     {...TextStylesAsync.Caption}
                     color={color}
                 >
-                    {formatTime(date)}
+                    {DateTimeFormatter.formatTime(date)}
                 </ASText>
             </ASFlex>
         </ASFlex>

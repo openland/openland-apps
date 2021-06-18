@@ -12,9 +12,11 @@ import { UButton } from 'openland-web/components/unicorn/UButton';
 import { ReleasePlatform } from 'openland-api/spacex.types';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { XScrollView3 } from 'openland-x/XScrollView3';
-import { formatDateTime } from 'openland-y-utils/formatTime';
 
 import { DevToolsScaffold } from './components/DevToolsScaffold';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatDateTime } = DateTimeFormatter;
 
 const notesColumn = css`
     text-overflow: ellipsis;

@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { View, TouchableWithoutFeedback } from 'react-native';
 import { showPictureModal } from 'openland-mobile/components/modal/ZPictureModal';
-import { formatDateTime } from 'openland-y-utils/formatTime';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatDateTime } = DateTimeFormatter;
 
 interface PreviewWrapperProps {
     path?: string;

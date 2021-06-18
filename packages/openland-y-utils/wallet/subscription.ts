@@ -4,8 +4,8 @@ import {
     Subscriptions_subscriptions,
     Subscriptions_subscriptions_product,
 } from 'openland-api/spacex.types';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
-import { formatAbsoluteDate } from 'openland-y-utils/wallet/dateTime';
 
 export interface SubscriptionConverted {
     product: Subscriptions_subscriptions_product;
@@ -23,7 +23,7 @@ export interface SubscriptionConverted {
 
 export const displaySubscriptionDate = (date: Date) => {
     const unixNumber = date.getTime();
-    return formatAbsoluteDate(unixNumber);
+    return DateTimeFormatter.formatAbsoluteDate(unixNumber);
 };
 
 const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
@@ -40,7 +40,7 @@ const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
     return variants[state] || `Expires on ${date}`;
 };
 
-export function convertSubscription (subscription: Subscriptions_subscriptions): SubscriptionConverted {
+export function convertSubscription(subscription: Subscriptions_subscriptions): SubscriptionConverted {
     const expires = new Date(parseInt(subscription.expires, 10));
     const subtitle = generateSubTitle(expires, subscription.state);
     const amount = formatMoney(subscription.amount);

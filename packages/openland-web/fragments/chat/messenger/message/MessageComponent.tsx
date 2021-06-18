@@ -6,7 +6,6 @@ import { MessageReactions } from './reactions/MessageReactions';
 import { MessageContent } from './MessageContent';
 import { ConversationEngine } from 'openland-engines/messenger/ConversationEngine';
 import { MessageCommentsButton } from './comments/MessageCommentsButton';
-import { formatTime, formatDateAtTime } from 'openland-y-utils/formatTime';
 import { MessageSender } from 'openland-api/spacex.types';
 import { HoverMenu } from './Menu/HoverMenu';
 import { TextCaption, TextLabel1, TextDensed } from 'openland-web/utils/TextStyles';
@@ -24,6 +23,9 @@ import { MentionedUserPopperContent } from 'openland-web/components/EntityPopper
 import { UAvatar } from 'openland-web/components/unicorn/UAvatar';
 import IcPending from 'openland-icons/s/ic-pending-16.svg';
 import IcSuccess from 'openland-icons/s/ic-success-16.svg';
+import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+
+const { formatTime, formatDateAtTime } = DateTimeFormatter;
 
 const senderContainer = css`
     display: flex;
@@ -159,12 +161,12 @@ export const MessageTime = React.memo(
                 onClick={
                     props.dateFormat === 'time'
                         ? (e) => {
-                              e.stopPropagation();
-                              instantHide();
-                              if (router && props.mId) {
-                                  router.navigate(`/message/${props.mId}`);
-                              }
-                          }
+                            e.stopPropagation();
+                            instantHide();
+                            if (router && props.mId) {
+                                router.navigate(`/message/${props.mId}`);
+                            }
+                        }
                         : undefined
                 }
             >
@@ -393,10 +395,10 @@ export const MessageComponent = React.memo((props: MessageComponentProps) => {
     const { engine, message } = props;
     const banInfo = props.engine.user
         ? useUserBanInfo(
-              props.engine.user.id,
-              props.engine.user.isBanned,
-              props.engine.user.isMeBanned,
-          )
+            props.engine.user.id,
+            props.engine.user.isBanned,
+            props.engine.user.isMeBanned,
+        )
         : undefined;
     const isBanned = banInfo ? banInfo.isBanned || banInfo.isMeBanned : false;
     const containerRef = React.useRef<HTMLDivElement>(null);

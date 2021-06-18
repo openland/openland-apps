@@ -1,5 +1,20 @@
 {
     "chat": "Чата",
-    "chat_plural": "Чаты"
+    "chat_plural": "Чаты",
+    "dateTime": {
+      "today": "Сегодня",
+      "yesterday": "Вчера",
+      "now": "сейчас",
+      "at": "в",
+      "shortMinute": "м",
+      "shortHour": "ч",
+      "shortDay": "д",
+      "justNow": "прямо сейчас",
+      "lastSeenYesterday": "last seen yesterday",
+      "lastSeenTwoDays": "last seen two days ago",
+      "lastSeenLongTime": "last seen long time ago",
+      "lastSeenDefault": "last seen",
+      "yearsOldShort": "y. o."
+    }
   }
   
