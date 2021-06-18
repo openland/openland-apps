@@ -66,7 +66,6 @@ interface ChatJoinProps {
 
 interface ChatJoinComponentProps {
     room: ChatJoin_room_SharedRoom;
-    ownerId?: string;
     theme: ThemeGlobal;
     action: () => Promise<any>;
     invitedBy?: { id: string; name: string; photo: string | null };
@@ -196,7 +195,6 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
         action,
         // invitedBy,
         room,
-        ownerId,
     } = props;
     let {
         id,
@@ -324,7 +322,7 @@ export const ChatJoinComponent = React.memo((props: ChatJoinComponentProps) => {
                     premiumSettings={room.premiumSettings!}
                     title={room.title}
                     photo={room.photo}
-                    ownerId={ownerId}
+                    ownerId={room.owner ? room.owner.id : undefined}
                 />
             );
         }
@@ -398,7 +396,6 @@ export const ChatJoin = React.memo((props: ChatJoinProps) => {
     return (
         <ChatJoinComponent
             room={room}
-            ownerId={room.owner ? room.owner.id : undefined}
             theme={props.theme}
             action={action}
             router={props.router}
