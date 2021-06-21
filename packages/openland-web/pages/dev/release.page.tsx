@@ -34,7 +34,7 @@ const AppReleasesFragment = React.memo(() => {
     const notesField = useField('notesField', '', form);
 
     const client = useClient();
-    const releases = client.useAppReleases({ platform: platformField.value }).appReleases;
+    const releases = client.useAppReleases({ platform: platformField.value }, { fetchPolicy: 'cache-and-network' }).appReleases;
 
     const onSave = React.useCallback(async () => {
         await form.doAction(async () => {
