@@ -303,15 +303,14 @@ export const noLoginMobileButton = (button: UButtonProps, os: OS | null) => {
         const host = location.host.startsWith('next.openland')
             ? 'https://next.openland.com'
             : location.host.startsWith('openland.')
-            ? 'https://www.openland.com'
-            : 'https://openland.com';
+                ? 'https://www.openland.com'
+                : 'https://openland.com';
 
         location.replace(host + location.pathname + '?q=store');
     };
 
     return (
         <UButton
-            text={button.text}
             size="large"
             shape="square"
             onClick={os === 'iOS' ? onIosClick : onAndroidClick}

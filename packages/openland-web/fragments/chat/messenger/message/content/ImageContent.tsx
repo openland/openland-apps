@@ -187,7 +187,7 @@ export const ImageContent = React.memo((props: ImageContentProps) => {
         return <GifContent file={props.file} />;
     }
 
-    const [isLoad, setIsLoad] = React.useState(!!props.progress || true);
+    const [isLoad, setIsLoad] = React.useState<boolean>(!!props.progress || true);
 
     const imgRef = React.useRef<HTMLImageElement>(null);
     const prevRef = React.useRef<HTMLDivElement>(null);

@@ -24,7 +24,7 @@ export const showNoiseWarning = async (title: string, message: string) => {
         builder.title(title);
         builder.message(message);
         builder.body(ctx => <div className={useTheme().theme === 'dark' ? warningContainerDark : warningContainer} />);
-        builder.action('Continue', async () => { resolve(); }, 'danger');
+        builder.action('Continue', async () => { resolve(undefined); }, 'danger');
         builder.onCancel(reject);
         builder.width(480);
         builder.show();

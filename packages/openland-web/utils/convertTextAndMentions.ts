@@ -51,11 +51,11 @@ export function convertToInputValue(text: string, spans: Span[]): URickTextValue
             value.push({ __typename: 'AllMention' });
         } else {
             if (userSpan.type === SpanType.mention_user) {
-                value.push({ __typename: 'User', ...userSpan.user });
+                value.push({ ...userSpan.user, __typename: 'User', });
             } else if (userSpan.type === SpanType.mention_room) {
-                value.push({ __typename: 'SharedRoom', ...userSpan.room as RoomT });
+                value.push({ ...userSpan.room as RoomT, __typename: 'SharedRoom', });
             } else if (userSpan.type === SpanType.mention_organization) {
-                value.push({ __typename: 'Organization', ...userSpan.organization });
+                value.push({ ...userSpan.organization, __typename: 'Organization', });
             }
         }
 
