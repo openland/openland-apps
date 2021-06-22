@@ -166,7 +166,7 @@ export const ru: any = {
   "discoverFindChats": "Найдите больше чатов",
   "discoverGetRecommendations": "Получите рекомендации по вашим интересам",
   "discoverCommunity": "Место для ваших чатов и каналов",
-  "discoverGroups": "ткройте для себя группы",
+  "discoverGroups": "Откройте для себя группы",
   "discoverNewCommunities": "Новые сообщества",
   "discoverNewGroups": "Новые группы",
   "discoverPopular": "Популярные сейчас",
