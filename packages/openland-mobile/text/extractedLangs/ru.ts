@@ -412,7 +412,8 @@ export const ru: any = {
   "organizationWithMember_1": "Организация   ·  {{count}} $t(member_1)",
   "organizationWithMember_2": "Организация   ·  {{count}} $t(member_2)",
   "other": "Другое",
-  "pairAccount": "Вы можете связать своб учетную запись с любым {{source}} и использовать его для входа",
+  "pairAccountPhone": "Вы можете связать свою учетную запись с любым номером телефона и использовать его для входа",
+  "pairAccountEmail": "Вы можете связать своб учетную запись с любым адресом электронной почты и использовать его для входа",
   "payChoosePaymentMethod": "Выберите правильный способ оплаты или добавьте новый для завершения транзакции",
   "payCompleteTransaction": "Завершить транзакцию",
   "payment": "Оплата",
@@ -710,10 +711,10 @@ export const ru: any = {
     "shortHour": "ч",
     "shortDay": "д",
     "justNow": "прямо сейчас",
-    "lastSeenYesterday": "последний раз был в сети вчера",
-    "lastSeenTwoDays": "последний раз был в сети два дня назад",
+    "lastSeenYesterday": "последний раз был(а) в сети вчера",
+    "lastSeenTwoDays": "последний раз был(а) в сети два дня назад",
     "lastSeenLongTime": "нет в сети",
-    "lastSeenDefault": "был в сети",
+    "lastSeenDefault": "был(а) в сети",
     "yearsOldShort": "лет"
   }
 };
