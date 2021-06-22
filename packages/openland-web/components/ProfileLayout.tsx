@@ -31,7 +31,7 @@ interface ProfileLayoutProps {
 }
 
 const COMPACT_VIEW_WIDTH = 1280;
-const LOAD_MORE_THRESHOLD = 200;
+const LOAD_MORE_THRESHOLD = 100;
 
 export const ProfileLayoutContext = React.createContext({
     bottomReached: false,
