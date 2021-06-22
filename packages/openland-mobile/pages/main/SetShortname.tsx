@@ -28,6 +28,7 @@ const RemarkText = (props: { text: string; error: boolean }) => {
                 marginTop: 8,
                 paddingHorizontal: 32,
             }}
+            allowFontScaling={false}
         >
             {props.text}
         </Text>
