@@ -103,7 +103,7 @@ const SettingsContent = ((props: PageProps) => {
             <ZListItem
                 leftIconColor={theme.tintCyan}
                 leftIcon={require('assets/ic-community-glyph-24.png')}
-                text={t('community_plural', 'Communities')}
+                text={t('communities', 'Communities')}
                 path="SettingsCommunities"
             />
 

@@ -15,7 +15,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import { SHeader } from 'react-native-s/SHeader';
 import Toast from 'openland-mobile/components/Toast';
 import { showStickerPackModal } from './components/stickers/showStickerPackModal';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 
 interface StickerCatalogProps {
     pack: StickerPackCatalog_stickers;
@@ -158,7 +158,7 @@ const StickersCatalogContent = React.memo((props: PageProps) => {
 
     return (
         <>
-            <SHeader title={capitalize(t('sticker_plural'))} />
+            <SHeader title={t('stickers')} />
             <View style={{ backgroundColor: theme.backgroundPrimary, justifyContent: 'center' }} onLayout={handleLayoutChange}>
                 {stickersPerRow > 0 && stickerSize > 0 && (
                     <SFlatList

@@ -36,7 +36,7 @@ export class SEquisiteCentered extends React.PureComponent<SEquisiteCenteredProp
                     <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleLeftLayout}>
                         {child[0]}
                     </View>
-                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleRightLayout}>
+                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 160 }} onLayout={this.handleRightLayout}>
                         {child[2]}
                     </View>
                     <View style={{ position: 'absolute', left: left, right: right, top: 0, flexDirection: 'row', opacity: inited ? 1 : 0 }}>
@@ -51,7 +51,7 @@ export class SEquisiteCentered extends React.PureComponent<SEquisiteCenteredProp
                     <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleLeftLayout}>
                         {child[0]}
                     </View>
-                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 120 }} onLayout={this.handleRightLayout}>
+                    <View style={{ flexDirection: 'row', flexShrink: 0, maxWidth: 160 }} onLayout={this.handleRightLayout}>
                         {child[2]}
                     </View>
                     <View style={{ position: 'absolute', left: padding, right: padding, top: 0, flexDirection: 'row', opacity: inited ? 1 : 0 }}>
