@@ -69,10 +69,7 @@ const ChangeLoginMethodComponent = React.memo((props: PageProps) => {
             eventTitle={isPhone ? 'change_phone_view' : 'change_email_view'}
             title={isPhone ? t('yourPhone', 'Your phone') : t('yourEmail', 'Your email')}
             subtitle={
-                t('pairAccount', {
-                    defaultValue: 'You can pair your account to any {{source}} and use it for login',
-                    source: isPhone ? 'phone number' : 'email address'
-                })
+                isPhone ? t('pairAccountPhone') : t('pairAccountEmail')
             }
             router={props.router}
             onSubmit={handleSubmit}

@@ -26,7 +26,7 @@ export const showDonationReactionWarning = async () => {
         );
 
         builder.button(t('cancel', 'Cancel'), 'cancel', reject);
-        builder.button(t('premiumReactionDonate', 'Donate $1'), 'pay', resolve);
+        builder.button(t('premiumReactionDonate', 'Donate $1'), 'pay', () => resolve(undefined));
         builder.onCancel(reject);
         builder.show();
     });

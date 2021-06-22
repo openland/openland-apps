@@ -37,7 +37,7 @@ import { ProfileOrganizationPrivate } from './components/ProfileOrganizationPriv
 import { SUPER_ADMIN } from 'openland-mobile/pages/Init';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 
 const ProfileOrganizationComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -546,7 +546,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 ))}
             </ZListGroup>
 
-            <ZListHeader text={capitalize(t('member_plural', 'Members'))} counter={organization.membersCount} useSpacer={true} />
+            <ZListHeader text={t('member', 'Members')} counter={organization.membersCount} useSpacer={true} />
             {shouldShowAddButton && (
                 <ZListItem
                     leftIcon={require('assets/ic-add-glyph-24.png')}

@@ -67,7 +67,7 @@ const SettingsCommunitiesComponent = React.memo((props: PageProps) => {
     const { t } = useText();
     return (
         <>
-            <SHeader title={t('community_plural', 'Communities')} />
+            <SHeader title={t('communities', 'Communities')} />
             <SettingsCommunitiesContent />
         </>
     );

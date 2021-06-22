@@ -100,7 +100,7 @@ export class XDialogProviderComponent extends React.Component<{}, XDialogProvide
                     if (res.useObserve) {
                         let width = ref.current!.offsetWidth;
                         let height = ref.current!.offsetHeight;
-                        observer = new ResizeObserver(src => {
+                        observer = new ResizeObserver((src: ResizeObserverEntry[]) => {
                             for (let s of src) {
                                 if (s.contentRect.width !== width || s.contentRect.height !== height) {
                                     pjs.scheduleUpdate();

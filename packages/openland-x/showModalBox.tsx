@@ -171,7 +171,7 @@ const ModalBoxComponent = React.memo<{
         let windowWidth = 0;
         let contentHeight = 0;
         let contentWidth = 0;
-        let observer = new ResizeObserver((src) => {
+        let observer = new ResizeObserver((src: ResizeObserverEntry[]) => {
             for (let s of src) {
                 if (s.target === containerRef.current) {
                     windowHeight = s.contentRect.height;
@@ -209,22 +209,22 @@ const ModalBoxComponent = React.memo<{
 
     const boxInlineStyle = isFullscreen
         ? {
-              top: 0,
-              right: 0,
-              bottom: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              maxWidth: 'initial',
-              maxHeight: 'initial',
-              borderRadius: 0,
-              transition: 'none',
-          }
+            top: 0,
+            right: 0,
+            bottom: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            maxWidth: 'initial',
+            maxHeight: 'initial',
+            borderRadius: 0,
+            transition: 'none',
+        }
         : {
-              top,
-              left,
-              width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
-          };
+            top,
+            left,
+            width: props.config.flowing ? 'auto' : props.config.width ? props.config.width : 440,
+        };
 
     return (
         <XModalBoxContext.Provider

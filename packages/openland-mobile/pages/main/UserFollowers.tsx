@@ -16,7 +16,7 @@ import {
 } from 'openland-api/spacex.types';
 
 import { UserFollowersItem } from './components/UserFollowersItem';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 
 export enum Tabs {
     FOLLOWING = 'FOLLOWING',
@@ -83,7 +83,7 @@ const UserFollowersComponent = React.memo<PageProps>((props) => {
                         selected={selectedTab === Tabs.FOLLOWERS}
                         onPress={() => setSelectedTab(Tabs.FOLLOWERS)}
                     >
-                        <Text>{capitalize(t('follower_plural', 'Followers'))} </Text>
+                        <Text>{t('followers', 'Followers')} </Text>
                         <Text style={{ color: theme.foregroundTertiary }}>
                             {getCounterValue({ count: followersCount, suffix: t('shortThousand', 'K'), cutoff: 10000 })}
                         </Text>

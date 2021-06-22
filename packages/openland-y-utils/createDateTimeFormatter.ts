@@ -168,7 +168,7 @@ export const createDateTimeFormatter = ({
                 if (now.getDate() === dt.getDate() + 1) {
                     return lastSeenYesterday;
                 }
-                return lastSeenDefault + ' ' + humanize.relativeTime(time / 1000);
+                return lastSeenDefault + ' ' + moment(time).fromNow();
             } else if (delta < oneMinute) {
                 return justNow;
             } else {

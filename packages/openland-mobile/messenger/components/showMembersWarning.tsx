@@ -34,7 +34,7 @@ export const showMembersWarning = async () => {
         );
 
         builder.button(t('cancel', 'Cancel'), 'cancel', reject);
-        builder.button(t('continue', 'Сontinue'), 'default', resolve);
+        builder.button(t('continue', 'Сontinue'), 'default', () => resolve(undefined));
         builder.show();
     });
 };

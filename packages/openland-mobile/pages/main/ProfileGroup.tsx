@@ -35,7 +35,7 @@ import { SHeader } from 'react-native-s/SHeader';
 import { ChatJoin } from './components/ChatJoin';
 import { groupInviteCapabilities } from 'openland-y-utils/InviteCapabilities';
 import { ZShowMoreText } from 'openland-mobile/components/ZShowMoreText';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 
 const ProfileGroupComponent = React.memo((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
@@ -447,7 +447,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
                 />
             </View>
 
-            <ZListHeader text={capitalize(t('member_plural', 'Members'))} counter={group.membersCount} useSpacer={true} />
+            <ZListHeader text={t('members', 'Members')} counter={group.membersCount} useSpacer={true} />
             {canAddDirectly && (
                 <ZListItem
                     text={t('addPeople', 'Add people')}

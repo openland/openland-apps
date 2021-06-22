@@ -24,7 +24,7 @@ import { InvalidateSync } from '@openland/patterns';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { handleGlobalInvitePress } from '../../Settings';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 
 export interface GlobalSearchProps {
     query: string;
@@ -186,7 +186,7 @@ const GlobalSearchWithMessagesInner = (props: GlobalSearchProps & { onMessagePre
                         <LoaderSpinner />
                     </View> :
                     <>
-                        {messages.length > 0 && <ZListHeader text={capitalize(t('message_plural', 'Messages'))} marginTop={items.length === 0 ? 0 : undefined} />}
+                        {messages.length > 0 && <ZListHeader text={t('messages', 'Messages')} marginTop={items.length === 0 ? 0 : undefined} />}
                     </>
             }
         </>

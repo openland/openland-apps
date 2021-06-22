@@ -34,7 +34,7 @@ export const showNoiseWarning = async (title: string, message: string) => {
         );
 
         builder.button(t('cancel', 'Cancel'), 'cancel', reject);
-        builder.button(t('continue', 'Continue'), 'destructive', resolve);
+        builder.button(t('continue', 'Continue'), 'destructive', () => resolve(undefined));
         builder.onCancel(reject);
         builder.show();
     });
