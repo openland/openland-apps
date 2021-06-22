@@ -274,7 +274,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followersCount}
                 </Text>
-                <Text> {t('follower', { count: user.followersCount, defaultValue: 'followers' })}</Text>
+                <Text> {t('follower', { count: user.followersCount, defaultValue: 'followers' }).toLowerCase()}</Text>
             </Text>
         </View>
     );

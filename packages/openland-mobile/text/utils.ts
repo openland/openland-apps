@@ -1,11 +1,11 @@
 import * as Localization from 'expo-localization';
-// import RNLocalize from 'react-native-localize';
+import RNLocalize from 'react-native-localize';
 
 export const getLocale = () => Localization.locale.startsWith('ru') ? 'ru' : 'en';
 
-// export const is24HourFormat = () => RNLocalize.uses24HourClock();
+export const is24HourFormat = () => RNLocalize.uses24HourClock();
 // export const is24HourFormat = () => getLocale() === 'ru';
-export const is24HourFormat = () => false;
+// export const is24HourFormat = () => false;
 
 // // Here Join concatenates two strings with a dot in the middle, unless the last string is empty.
 // // So Join<"a","b.c"> is "a.b.c" while Join<"a",""> is "".
@@ -46,4 +46,4 @@ export const is24HourFormat = () => false;
 //     )
 //     : never;
 
-// export type FlattenForIntellisense<T> = T extends object ? {} & { [P in keyof T]: FlattenForIntellisense<T[P]> } : T;
+export type FlattenForIntellisense<T> = T extends object ? {} & { [P in keyof T]: FlattenForIntellisense<T[P]> } : T;

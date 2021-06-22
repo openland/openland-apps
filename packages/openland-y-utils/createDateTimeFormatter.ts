@@ -237,9 +237,11 @@ export const createDateTimeFormatter = ({
         let dt = new Date(date);
         let now = new Date();
         if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth() && now.getDate() === dt.getDate()) {
+            let localMoment = moment(date);
+            localMoment.locale('en');
             return is24HourFormat
-                ? moment(date).format('H:mm')
-                : moment(date).format('h:mm A');
+                ? localMoment.format('H:mm')
+                : localMoment.format('h:mm A');
         }
         return capitalize(moment(date).format('MMM D'));
     }

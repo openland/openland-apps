@@ -75,6 +75,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                         title={t('paymentsHelp', 'Payments help')}
                         size="large"
                         flexGrow={1}
+                        flexShrink={1}
                         style="secondary"
                         onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
                     />

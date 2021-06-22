@@ -13,6 +13,7 @@ import { View } from 'react-native';
 import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { useText } from 'openland-mobile/text/useText';
+import { capitalize } from 'openland-y-utils/capitalize';
 
 const Item = React.memo((props: { community: MyCommunities_myCommunities, router: SRouter, theme: ThemeGlobal }) => {
     const { id, photo, name, membersCount, featured } = props.community;
@@ -53,7 +54,7 @@ const SettingsCommunitiesContent = React.memo(() => {
                 {adminCommunities.map(c => <Item key={c.id} community={c} router={router} theme={theme} />)}
             </ZListGroup>
 
-            <ZListGroup header={t('member', 'Member')}>
+            <ZListGroup header={capitalize(t('member', 'Member'))}>
                 {memberCommunities.map(c => <Item key={c.id} community={c} router={router} theme={theme} />)}
             </ZListGroup>
 

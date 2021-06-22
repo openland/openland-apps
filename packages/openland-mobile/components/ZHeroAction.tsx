@@ -5,10 +5,10 @@ import { TextStyles, HighlightAlpha } from 'openland-mobile/styles/AppStyles';
 
 const styles = StyleSheet.create({
     box: {
-        width: 80,
+        width: 90,
         height: 68,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     } as ViewStyle,
     title: {
         ...TextStyles.Label2,

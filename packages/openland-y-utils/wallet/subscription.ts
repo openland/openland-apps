@@ -4,6 +4,7 @@ import {
     Subscriptions_subscriptions,
     Subscriptions_subscriptions_product,
 } from 'openland-api/spacex.types';
+import { t } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
 
@@ -30,14 +31,14 @@ const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
     const date = displaySubscriptionDate(expires);
 
     const variants: { [key in WalletSubscriptionState]: string } = {
-        [WalletSubscriptionState.STARTED]: `Next bill on ${date}`,
-        [WalletSubscriptionState.GRACE_PERIOD]: `Payment failed`,
-        [WalletSubscriptionState.RETRYING]: `Payment failed`,
-        [WalletSubscriptionState.CANCELED]: `Expires on ${date}`,
-        [WalletSubscriptionState.EXPIRED]: `Expired on ${date}`,
+        [WalletSubscriptionState.STARTED]: t('subscriptionsStarted', { date, defaultValue: `Next bill on {{date}}` }),
+        [WalletSubscriptionState.GRACE_PERIOD]: t('subscriptionsPaymentFailed', 'Payment failed'),
+        [WalletSubscriptionState.RETRYING]: t('subscriptionsPaymentFailed', 'Payment failed'),
+        [WalletSubscriptionState.CANCELED]: t('subscriptionsCanceled', { date, defaultValue: `Expires on {{date}}` }),
+        [WalletSubscriptionState.EXPIRED]: t('subscriptionsExpired', { date, defaultValue: `Expired on {{date}}` }),
     };
 
-    return variants[state] || `Expires on ${date}`;
+    return variants[state] || t('subscriptionsCanceled', { date, defaultValue: `Expires on {{date}}` });
 };
 
 export function convertSubscription(subscription: Subscriptions_subscriptions): SubscriptionConverted {
@@ -45,10 +46,10 @@ export function convertSubscription(subscription: Subscriptions_subscriptions): 
     const subtitle = generateSubTitle(expires, subscription.state);
     const amount = formatMoney(subscription.amount);
     const intervalVariants: { [key in WalletSubscriptionInterval]: string } = {
-        [WalletSubscriptionInterval.MONTH]: 'mo',
-        [WalletSubscriptionInterval.WEEK]: 'wk',
+        [WalletSubscriptionInterval.MONTH]: t('periodShortMonth'),
+        [WalletSubscriptionInterval.WEEK]: t('periodShortWeek'),
     };
-    const interval = intervalVariants[subscription.interval] || 'period';
+    const interval = intervalVariants[subscription.interval] || t('subscriptionsPeriod', 'period');
     const amountInterval = `${amount} / ${interval}, `;
     let converted = {
         photo: 'ph://' + subscription.id,

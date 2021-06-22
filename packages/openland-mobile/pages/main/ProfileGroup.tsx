@@ -383,7 +383,7 @@ const ProfileGroupComponent = React.memo((props: PageProps) => {
             >
                 <ZHeroAction
                     icon={muted ? require('assets/ic-notifications-24.png') : require('assets/ic-notifications-off-24.png')}
-                    title={muted ? t('unmute', 'Unmute') : t('mute', 'Mute')}
+                    title={muted ? t('unmuteShort', 'Unmute') : t('mute', 'Mute')}
                     onPress={() => {
                         setMuted(!muted);
                         client.mutateRoomSettingsUpdate({ roomId: group.id, settings: { mute: !muted } });
