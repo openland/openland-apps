@@ -38,7 +38,7 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedR
     if (room.kind === 'INTERNAL') {
         subtitle = 'Organization';
     } else if (room.kind === 'GROUP' || room.kind === 'PUBLIC') {
-        subtitle = room.membersCount + (room.membersCount === 1 ? ' member' : ' members');
+        subtitle = room.membersCount + ' ' + t('member', { count: room.membersCount });
     }
 
     if (typing) {

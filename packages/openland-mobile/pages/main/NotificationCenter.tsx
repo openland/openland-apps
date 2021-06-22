@@ -6,10 +6,12 @@ import { NotificationCenterEmpty } from 'openland-mobile/notificationCenter/Noti
 import { SHeader } from 'react-native-s/SHeader';
 import { ActiveTabContext } from './Home';
 import { NotificationsList } from 'openland-mobile/notificationCenter/NotificationsList';
+import { useText } from 'openland-mobile/text/useText';
 
 const NotificationCenterWrapper = React.memo((props: PageProps) => {
     const engine = getMessenger().engine.notificationCenter;
     const tabEnabled = React.useContext(ActiveTabContext);
+    const { t } = useText();
     const [, setDsGeneration] = React.useState(0);
 
     React.useEffect(() => {
@@ -24,7 +26,7 @@ const NotificationCenterWrapper = React.memo((props: PageProps) => {
 
     return (
         <React.Fragment key={'nc-' + isEmpty}>
-            <SHeader title="Notifications" />
+            <SHeader title={t('notifications')} />
             {isEmpty && <NotificationCenterEmpty />}
             {!isEmpty && <NotificationsList />}
         </React.Fragment>

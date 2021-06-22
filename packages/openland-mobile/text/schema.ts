@@ -1,9 +1,10 @@
 // import { AddSuffixes, FilterNotTypeRecursive, FilterTypeRecursive, FlattenForIntellisense, Paths, ReplaceTypeRecurcive } from "./utils";
-// import en from './extractedLangs/en.json';
+// import { en } from './extractedLangs/en';
 
 // type Plural = number;
 
 // export type LocalizationSchema = typeof en;
+export type LocalizationSchema = any;
 
 // export type LocalizedResources = Paths<LocalizationSchema, string>;
 // export type LocalizedPluralsResources = Paths<LocalizationSchema, Plural>;

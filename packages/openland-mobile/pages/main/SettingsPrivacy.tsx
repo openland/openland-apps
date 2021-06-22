@@ -137,7 +137,8 @@ export const ChangeLoginMethodCode = withApp(ChangeLoginMethodCodeComponent, {
     navigationAppearance: 'small-hidden',
 });
 
-type SettingLabel = 'Everyone' | 'Nobody' | 'Correspondents';
+// type SettingLabel = 'Everyone' | 'Nobody' | 'Correspondents';
+type SettingLabel = string;
 
 const useLabels = () => {
     const { t } = useText();
@@ -159,7 +160,8 @@ const useLabels = () => {
     };
 };
 
-type BooleanSetting = 'Allowed' | 'Disallowed';
+type BooleanSetting = string;
+// type BooleanSetting = 'Allowed' | 'Disallowed';
 
 const SettingsPrivacyContent = (props: PageProps) => {
     const theme = useTheme();
@@ -198,7 +200,9 @@ const SettingsPrivacyContent = (props: PageProps) => {
     );
     const communityAdminsContactsPrivacyField = useField<BooleanSetting>(
         'community-admins-contacts-privacy',
-        communityAdminsCanSeeContactInfo ? t('allowed', 'Allowed') : t('disallowed', 'Disallowed'),
+        communityAdminsCanSeeContactInfo
+            ? t('allowed', 'Allowed') as BooleanSetting
+            : t('disallowed', 'Disallowed') as BooleanSetting,
         form,
     );
 
