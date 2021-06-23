@@ -55,7 +55,7 @@ const Collection = (props: CollectionProps) => {
                     <View style={{ flexGrow: 1, flexShrink: 1, flexDirection: 'row', alignItems: 'center' }}>
                         <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary, flexGrow: 1, flexShrink: 1 }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{props.item.title}</Text>
                         <Text style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>
-                            {t('group', { count: props.item.chatsCount, defaultValue: 'group' })}
+                            {props.item.chatsCount} {t('group', { count: props.item.chatsCount, defaultValue: 'group' })}
                         </Text>
                     </View>
                 </View>

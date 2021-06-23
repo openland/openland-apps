@@ -135,7 +135,11 @@ const RoomsFeedPage = React.memo((props: PageProps) => {
             />
             {page === 'voice' && (
                 <>
-                    <SHeaderButton title={t('newRoom', 'New room')} onPress={pushRoom} />
+                    <SHeaderButton
+                        title={t('new', 'New')}
+                        icon={require('assets/ic-add-24.png')}
+                        onPress={pushRoom}
+                    />
                     <SFlatList
                         scrollRef={scrollRef}
                         data={voiceChats}

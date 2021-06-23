@@ -6,7 +6,7 @@ import Alert from 'openland-mobile/components/AlertBlanket';
 import ActionSheet from 'openland-mobile/components/ActionSheet';
 import { withApp } from 'openland-mobile/components/withApp';
 import { useClient } from 'openland-api/useClient';
-import { Image, Linking, Text, View } from 'react-native';
+import { Image, Linking, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { ASSafeAreaView } from 'react-native-async-view/ASSafeAreaView';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { UserView } from './components/UserView';
@@ -68,9 +68,22 @@ const ContactsWasImportStub = React.memo(() => {
     );
 });
 
+const PrivacyLink = React.memo(({ children }: { children?: any }) => {
+    const theme = useTheme();
+    const onPress = React.useCallback(() => {
+        Linking.openURL('https://openland.com/privacy');
+    }, []);
+    const textDecorationLine = theme.accentPrimary === theme.foregroundPrimary ? 'underline' : 'none';
+    return (
+        <TouchableWithoutFeedback onPress={onPress}>
+            <Text style={{ color: theme.accentPrimary, textDecorationLine }}>{children}</Text>
+        </TouchableWithoutFeedback>
+    );
+});
+
 const useAllowContactsAlert = (cb: () => void) => {
     const theme = useTheme();
-    const { t } = useText();
+    const { t, Trans } = useText();
     const handleContactsAllow = async () => {
         const contactsExporter = getContactsExporter();
         await contactsExporter.init(cb);
@@ -85,17 +98,11 @@ const useAllowContactsAlert = (cb: () => void) => {
                     style={{ ...TextStyles.Body, marginBottom: 16, color: theme.foregroundPrimary }}
                     allowFontScaling={false}
                 >
-                    {t('allowContactsDescription', 'Find people you already know by allowing Openland to upload and store a copy of your contacts. Privacy policy is at')}
-                    {' '}
-                    <Text
-                        style={{
-                            color: theme.accentPrimary,
-                        }}
-                        onPress={() => Linking.openURL('https://openland.com/privacy')}
-                        allowFontScaling={false}
-                    >
-                        https://openland.com/privacy
-                    </Text>
+                    <Trans
+                        i18nKey="allowContactsDescription"
+                        defaults="Find people you already know by allowing Openland to upload and store a copy of your contacts. <PrivacyLink>Privacy policy</PrivacyLink>"
+                        components={{ PrivacyLink: <PrivacyLink /> }}
+                    />
                 </Text>
             </View>,
         );

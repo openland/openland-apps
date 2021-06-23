@@ -45,7 +45,7 @@ const removeSpace = (s: string) => s.replace(SPACE_REGEX, '');
 const showConfirmModal = ({ phone }: { phone: string }): Promise<boolean> => {
     return new Promise((resolve) => {
         const builder = new AlertBlanketBuilder();
-        builder.title(`${phone}?`);
+        builder.title(`${phone}`);
         builder.message(t('loginPhoneConfirm', 'Is this phone number correct?'));
         builder.button(t('change', 'Change'), 'cancel', () => resolve(false));
         builder.button(t('confirm', 'Confirm'), 'default', () => resolve(true));

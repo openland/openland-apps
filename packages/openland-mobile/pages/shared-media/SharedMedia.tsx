@@ -74,7 +74,7 @@ const SharedMediaInner = React.memo(({ chatId }: { chatId: string }) => {
     const [wrapperWidth, setWrapperWidth] = React.useState(0);
     const handleLayout = React.useCallback((e: LayoutChangeEvent) => {
         setWrapperWidth(e.nativeEvent.layout.width);
-    }, []);
+    }, [t]);
 
     return (
         <>

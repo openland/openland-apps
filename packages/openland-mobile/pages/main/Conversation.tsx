@@ -53,6 +53,7 @@ import { StickerPicker } from './components/stickers/StickerPicker';
 import { SDevice } from 'react-native-s/SDevice';
 import { getCachedKeyboardHeight } from 'react-native-s/navigation/containers/PageKeyboard';
 import { CallHeaderButton } from './CallHeaderButton';
+import { t } from 'openland-mobile/text/useText';
 
 interface ConversationRootProps extends PageProps {
     messenger: MobileMessenger;
@@ -618,7 +619,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                     text={this.state.text}
                                     suggestions={suggestions}
                                     topView={quoted}
-                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? 'Broadcast something...' : 'Message'}
+                                    placeholder={(sharedRoom && sharedRoom.isChannel) ? t('inputPlaceholderChannel', 'Broadcast something...') : t('inputPlaceholderGroup', 'Message')}
                                     canSubmit={canSubmit}
                                     onStickerKeyboardButtonPress={this.handleStickerKeyboardButtonPress}
                                     stickerKeyboardShown={this.state.stickerKeyboardShown}

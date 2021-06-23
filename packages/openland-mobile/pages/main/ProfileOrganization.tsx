@@ -546,7 +546,7 @@ const ProfileOrganizationComponent = React.memo((props: PageProps) => {
                 ))}
             </ZListGroup>
 
-            <ZListHeader text={t('member', 'Members')} counter={organization.membersCount} useSpacer={true} />
+            <ZListHeader text={t('members', 'Members')} counter={organization.membersCount} useSpacer={true} />
             {shouldShowAddButton && (
                 <ZListItem
                     leftIcon={require('assets/ic-add-glyph-24.png')}

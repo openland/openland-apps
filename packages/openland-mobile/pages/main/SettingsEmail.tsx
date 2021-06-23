@@ -39,7 +39,7 @@ const SettingsEmailContent = React.memo(() => {
                 footer={
                     t('notificationsEmailDescription', {
                         email: settings.primaryEmail,
-                        defaultValue: 'When you’re busy or not online, Openland can send you email notifications about new messages. We will use {{email}} for notifications'
+                        defaultValue: 'When you’re busy or not online, Openland can send you email notifications about new messages'
                     })
                 }
                 value={settings.emailFrequency}
