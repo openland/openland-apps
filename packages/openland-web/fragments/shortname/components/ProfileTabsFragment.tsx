@@ -114,7 +114,7 @@ export const ProfileTabsFragment = React.memo(({ chatId, group }: ProfileSharedM
     const client = useClient();
     const { bottomReached } = React.useContext(ProfileLayoutContext);
     const layout = useLayout();
-    const counters = client.useSharedMediaCounters({ chatId }, { suspense: false });
+    const counters = client.useSharedMediaCounters({ chatId }, { suspense: false, fetchPolicy: 'network-only' });
     const countersSum = getCountersSum(counters);
 
     const tabs: [string, number | null][] = [
