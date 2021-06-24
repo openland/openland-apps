@@ -171,7 +171,7 @@ export const SharedMedia = React.memo(React.forwardRef((props: SharedMediaProps,
     const loadMore = React.useCallback(async () => {
         if ((after || after === undefined) && !loading) {
             setLoading(true);
-            let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 30 });
+            let res = await client.querySharedMedia({ chatId: props.chatId, after, mediaTypes: props.mediaTypes, first: 60 });
             let nextAfter: string | undefined = undefined;
             let newArr: SharedItem[] = [];
             res.sharedMedia.edges.map((i) => {

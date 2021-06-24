@@ -53,7 +53,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
                 {
                     cid: id,
                     query,
-                    first: 10,
+                    first: 30,
                     after: reseted ? undefined : membersFetching.cursor,
                 },
                 { fetchPolicy: 'network-only' },
@@ -125,7 +125,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
                 // refetch in case someone is removed
                 let initial = (
                     await client.queryRoomMembersPaginated(
-                        { roomId: id, first: 15 },
+                        { roomId: id, first: 30 },
                         { fetchPolicy: 'network-only' },
                     )
                 ).members;
@@ -159,7 +159,7 @@ export const GroupMembers = ({ group }: GroupMembersProps) => {
 
     const isSearching = membersQuery.length > 0;
     const loadingOrSearching =
-        loading || (isSearching && membersFetching.loading > 0 && members.length > 15);
+        loading || (isSearching && membersFetching.loading > 0 && members.length > 30);
 
     const { canAddDirectly, canGetInviteLink } = groupInviteCapabilities(group);
 

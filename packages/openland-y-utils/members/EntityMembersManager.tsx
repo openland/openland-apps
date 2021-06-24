@@ -48,11 +48,11 @@ export const EntityMembersManager = React.forwardRef(
 
         const initialData = isGroup
             ? client.useRoomMembersPaginated(
-                  { roomId: entityId, first: 15 },
+                  { roomId: entityId, first: 30 },
                   { fetchPolicy: 'network-only' },
               ).members
             : client.useOrganizationMembers(
-                  { organizationId: entityId, first: 15 },
+                  { organizationId: entityId, first: 30 },
                   { fetchPolicy: 'network-only' },
               ).organization.members;
 
