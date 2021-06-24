@@ -127,7 +127,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                     </XView>
                     <XView flexDirection="row" marginTop={8} color="var(--foregroundPrimary)">
                         Need help?
-                        <span className={contactUs} onClick={() => router.navigate('/zoebp1bZA0F5P5oL5ZgrFwEMA4')}>
+                        <span className={contactUs} onClick={() => router.navigate('/support')}>
                             Contact us
                         </span>
                     </XView>

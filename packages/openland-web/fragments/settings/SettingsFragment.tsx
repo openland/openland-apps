@@ -198,7 +198,7 @@ export const SettingsFragment = React.memo(() => {
                             <UListItem
                                 title="Help and feedback"
                                 icon={<HelpIcon />}
-                                path="/mail/9KkDvyowQgcYAn0WvYgXFrdqAp"
+                                path="/support"
                             />
                             <UListItem
                                 title="About us"

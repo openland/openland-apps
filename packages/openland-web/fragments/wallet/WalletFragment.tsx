@@ -112,7 +112,7 @@ export const WalletFragment = React.memo(() => {
                         size="large"
                         flexGrow={1}
                         style="secondary"
-                        onClick={() => router.navigate('/zoebp1bZA0F5P5oL5ZgrFwEMA4')}
+                        onClick={() => router.navigate('/support')}
                     />
                 </XView>
             </UListGroup>
