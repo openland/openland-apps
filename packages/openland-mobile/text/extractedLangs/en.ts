@@ -1,4 +1,6 @@
-export const en = {
+import { LocalizationSchema, PrepareSchema } from "../schema";
+
+export const en: PrepareSchema<LocalizationSchema, '' | '_plural'> = {
   "about": "About",
   "aboutOpenland": "About Openland",
   "aboutUs": "About us",
@@ -221,6 +223,7 @@ export const en = {
   "followers": "Followers",
   "following": "Following",
   "followingCount": "following",
+  "followingCount_plural": "following",
   "forward": "Forward",
   "forwardMessages": "Forward messages",
   "forwardTo": "Forward to",
@@ -299,7 +302,7 @@ export const en = {
   "licenses": "Licenses",
   "like": "Like",
   "likeCount": "like",
-  "like_plural": "likes",
+  "likeCount_plural": "likes",
   "liked": "Liked",
   "linkCopied": "Link copied",
   "links": "Links",
