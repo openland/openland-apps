@@ -22,7 +22,7 @@ const counterStyle = css`
     margin-left: 5px;
 `;
 
-const LOADING_HEIGHT = 200;
+const LOADING_HEIGHT = 100;
 
 export enum FollowersTabs {
     FOLLOWING = 'FOLLOWING',
@@ -42,10 +42,14 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
     const router = React.useContext(XViewRouterContext);
     const themeSuffix = useThemeSuffix();
     const [selectedTab, setSelectedTab] = React.useState(initialTab || FollowersTabs.FOLLOWING);
-    const [following, setFollowing] = React.useState<SocialUserFollowing_socialUserFollowing_items[] | null>(null);
+    const [following, setFollowing] = React.useState<
+        SocialUserFollowing_socialUserFollowing_items[] | null
+    >(null);
     const [followingCursor, setFollowingCursor] = React.useState<string | null>(null);
     const [followersCursor, setFollowersCursor] = React.useState<string | null>(null);
-    const [followers, setFollowers] = React.useState<SocialUserFollowers_socialUserFollowers_items[] | null>(null);
+    const [followers, setFollowers] = React.useState<
+        SocialUserFollowers_socialUserFollowers_items[] | null
+    >(null);
     const { followersCount, followingCount } = client.useUserFollowers(
         { id: uid },
         { fetchPolicy: 'network-only' },
@@ -76,32 +80,64 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
         router!.navigate(`/${userId}`);
     }, []);
 
-    const handleMessageFollowerClick = React.useCallback((userId: string, e: React.MouseEvent<any, MouseEvent>) => {
-        e.stopPropagation();
-        hide();
-        router!.navigate(`/mail/${userId}`);
-    }, []);
+    const handleMessageFollowerClick = React.useCallback(
+        (userId: string, e: React.MouseEvent<any, MouseEvent>) => {
+            e.stopPropagation();
+            hide();
+            router!.navigate(`/mail/${userId}`);
+        },
+        [],
+    );
 
-    const handleFollowClick = React.useCallback(async (userId: string, e: React.MouseEvent<any, MouseEvent>) => {
-        e.stopPropagation();
-        await client.mutateSocialFollow({ uid: userId });
+    const handleFollowClick = React.useCallback(
+        async (userId: string, e: React.MouseEvent<any, MouseEvent>) => {
+            e.stopPropagation();
+            await client.mutateSocialFollow({ uid: userId });
 
-        setFollowers(followers!.map(follower => {
-            return follower.id === userId ? { ...follower, followedByMe: true, followersCount: follower.followersCount + 1 } : follower;
-        }));
-    }, [followers]);
+            setFollowers(
+                followers!.map((follower) => {
+                    return follower.id === userId
+                        ? {
+                              ...follower,
+                              followedByMe: true,
+                              followersCount: follower.followersCount + 1,
+                          }
+                        : follower;
+                }),
+            );
+        },
+        [followers],
+    );
 
     const handleLoadMore = React.useCallback(async () => {
         if (selectedTab === FollowersTabs.FOLLOWING && followingCursor && following) {
-            const followingBatch = (await client.querySocialUserFollowing({ uid, after: followingCursor, first: 15 }, { fetchPolicy: 'network-only' })).socialUserFollowing;
+            const followingBatch = (
+                await client.querySocialUserFollowing(
+                    {
+                        uid,
+                        after: followingCursor,
+                        first: 15,
+                    },
+                    { fetchPolicy: 'network-only' },
+                )
+            ).socialUserFollowing;
             setFollowing(following.concat(followingBatch.items));
             setFollowingCursor(followingBatch.cursor);
-        } else if (selectedTab === FollowersTabs.FOLLOWING && followersCursor && followers) {
-            const followersBatch = (await client.querySocialUserFollowers({ uid, after: followersCursor, first: 15 }, { fetchPolicy: 'network-only' })).socialUserFollowers;
+        } else if (selectedTab === FollowersTabs.FOLLOWERS && followersCursor && followers) {
+            const followersBatch = (
+                await client.querySocialUserFollowers(
+                    {
+                        uid,
+                        after: followersCursor,
+                        first: 15,
+                    },
+                    { fetchPolicy: 'network-only' },
+                )
+            ).socialUserFollowers;
             setFollowers(followers.concat(followersBatch.items));
             setFollowersCursor(followersBatch.cursor);
         }
-    }, [following, followingCursor, followers, followersCursor, uid]);
+    }, [following, followingCursor, followers, followersCursor, uid, selectedTab]);
 
     const handleScroll = React.useCallback(
         (values: XScrollValues) => {
@@ -110,7 +146,7 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
                 handleLoadMore();
             }
         },
-        [following, followingCursor, followers, followersCursor, uid],
+        [following, followingCursor, followers, followersCursor, uid, selectedTab],
     );
 
     return (
@@ -142,73 +178,101 @@ const UserFollowersModalComponent = React.memo<UserFollowersModalComponentProps>
                     Followers<span className={counterStyle}>{followersCount}</span>
                 </XView>
             </XView>
-            <XScrollView3 flexGrow={1} flexShrink={1} paddingBottom={24} onScroll={handleScroll}>
-                {selectedTab === FollowersTabs.FOLLOWING && following && following.length === 0 && (
-                    <XView {...TextStyles.Title1} alignItems="center" justifyContent="center" paddingTop={12} paddingBottom={46}>
-                        <img
-                            width="320"
-                            height="200"
-                            src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
-                            srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
-                            alt=""
-                        />
-                        No following yet
-                    </XView>
-                )}
-                {selectedTab === FollowersTabs.FOLLOWERS && followers && followers.length === 0 && (
-                    <XView {...TextStyles.Title1} alignItems="center" justifyContent="center" paddingTop={12} paddingBottom={46}>
-                        <img
-                            width="320"
-                            height="200"
-                            src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
-                            srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
-                            alt=""
-                        />
-                        No followers yet
-                    </XView>
-                )}
-                {selectedTab === FollowersTabs.FOLLOWING && following && following.map(item => {
-                    return (
-                        <UUserFollowerView
-                            user={item}
-                            key={item.id}
-                            rightElement={
-                                <UIconButton
-                                    icon={myId === item.id ? <IcBookmark /> : <IcMessage />}
-                                    onClick={(e) => handleMessageFollowerClick(item.id, e)}
-                                />
-                            }
-                            onClick={() => handleItemClick(item.id)}
-                        />
-                    );
-                })}
-                {selectedTab === FollowersTabs.FOLLOWERS && followers && followers.map(item => {
-                    let rightElement;
-                    if (!item.followedByMe && !(myId === item.id)) {
-                        rightElement = (
-                            <UIconButton
-                                icon={<IcUserAdd />}
-                                onClick={(e) => handleFollowClick(item.id, e)}
+            {selectedTab === FollowersTabs.FOLLOWING && following && following.length === 0 && (
+                <XView
+                    {...TextStyles.Title1}
+                    alignItems="center"
+                    justifyContent="center"
+                    paddingTop={12}
+                    paddingBottom={46}
+                >
+                    <img
+                        width="320"
+                        height="200"
+                        src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
+                        srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
+                        alt=""
+                    />
+                    No following yet
+                </XView>
+            )}
+            {selectedTab === FollowersTabs.FOLLOWERS && followers && followers.length === 0 && (
+                <XView
+                    {...TextStyles.Title1}
+                    alignItems="center"
+                    justifyContent="center"
+                    paddingTop={12}
+                    paddingBottom={46}
+                >
+                    <img
+                        width="320"
+                        height="200"
+                        src={`//cdn.openland.com/shared/art/art-shared${themeSuffix}.png`}
+                        srcSet={`//cdn.openland.com/shared/art/art-shared${themeSuffix}@2x.png 2x, //cdn.openland.com/shared/art/art-shared${themeSuffix}@3x.png 3x`}
+                        alt=""
+                    />
+                    No followers yet
+                </XView>
+            )}
+            {selectedTab === FollowersTabs.FOLLOWING && following && (
+                <XScrollView3
+                    flexGrow={1}
+                    flexShrink={1}
+                    paddingBottom={24}
+                    onScroll={handleScroll}
+                >
+                    {following.map((item) => {
+                        return (
+                            <UUserFollowerView
+                                user={item}
+                                key={item.id}
+                                rightElement={
+                                    <UIconButton
+                                        icon={myId === item.id ? <IcBookmark /> : <IcMessage />}
+                                        onClick={(e) => handleMessageFollowerClick(item.id, e)}
+                                    />
+                                }
+                                onClick={() => handleItemClick(item.id)}
                             />
                         );
-                    }
+                    })}
+                </XScrollView3>
+            )}
+            {selectedTab === FollowersTabs.FOLLOWERS && followers && (
+                <XScrollView3
+                    flexGrow={1}
+                    flexShrink={1}
+                    paddingBottom={24}
+                    onScroll={handleScroll}
+                >
+                    {followers.map((item) => {
+                        let rightElement;
+                        if (!item.followedByMe && !(myId === item.id)) {
+                            rightElement = (
+                                <UIconButton
+                                    icon={<IcUserAdd />}
+                                    onClick={(e) => handleFollowClick(item.id, e)}
+                                />
+                            );
+                        }
 
-                    return (
-                        <UUserFollowerView
-                            user={item}
-                            key={item.id}
-                            rightElement={rightElement}
-                            onClick={() => handleItemClick(item.id)}
-                        />
-                    );
-                })}
-            </XScrollView3>
+                        return (
+                            <UUserFollowerView
+                                user={item}
+                                key={item.id}
+                                rightElement={rightElement}
+                                onClick={() => handleItemClick(item.id)}
+                            />
+                        );
+                    })}
+                </XScrollView3>
+            )}
         </>
     );
 });
 
-export const showUserFollowersModal = (props: { uid: string, initialTab: FollowersTabs }) => {
+export const showUserFollowersModal = (props: { uid: string; initialTab: FollowersTabs }) => {
     showModalBox({ useTopCloser: true, width: 480 }, (ctx) => (
-        <UserFollowersModalComponent {...props} hide={ctx.hide}/>
+        <UserFollowersModalComponent {...props} hide={ctx.hide} />
     ));
 };
