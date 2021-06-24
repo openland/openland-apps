@@ -13,7 +13,7 @@ import { showReactionsList } from 'openland-mobile/components/message/showReacti
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { ZLabelButton } from 'openland-mobile/components/ZLabelButton';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 
 const styles = StyleSheet.create({
     senderName: {
@@ -151,9 +151,9 @@ export const CommentView = React.memo<CommentViewProps>((props) => {
                     )}
 
                     {!!props.onReplyPress && <ZLabelButton label={t('reply', 'Reply')} onPress={() => props.onReplyPress!(comment)} />}
-                    <ZLabelButton label={likedByMe ? t('liked', 'Liked') : capitalize(t('like', 'Like'))} style={likedByMe ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
+                    <ZLabelButton label={likedByMe ? t('liked', 'Liked') : t('like', 'Like')} style={likedByMe ? 'danger' : 'default'} onPress={() => handleReactionPress(true)} />
 
-                    {likesCount > 0 && <ZLabelButton label={`${likesCount} ` + t('like', { count: likesCount, defaultValue: 'like' })} onPress={handleReactionListPress} />}
+                    {likesCount > 0 && <ZLabelButton label={`${likesCount} ` + t('likeCount', { count: likesCount, defaultValue: 'like' })} onPress={handleReactionListPress} />}
                 </>
             )}
         </View>

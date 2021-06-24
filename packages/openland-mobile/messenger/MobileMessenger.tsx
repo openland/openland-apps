@@ -648,7 +648,7 @@ export class MobileMessenger {
         }
 
         if (!conversation.isBanned) {
-            builder.action(t('comment', 'Comment'), () => {
+            builder.action(t('commentAction', 'Comment'), () => {
                 this.routerSuitable.push('Message', { messageId: message.id });
             }, false, require('assets/ic-message-24.png'));
         }

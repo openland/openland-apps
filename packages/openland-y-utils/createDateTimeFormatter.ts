@@ -1,9 +1,4 @@
-import * as humanize from 'humanize';
 import moment from 'moment';
-import { capitalize } from './capitalize';
-
-const months = moment().localeData().monthsShort().map(capitalize);
-const monthsFull = moment().localeData().months().map(capitalize);
 
 const EMPTY_YEAR = 10000;
 
@@ -30,7 +25,7 @@ export const createDateTimeFormatter = ({
     lastSeenTwoDays = 'last seen two days ago',
     lastSeenLongTime = 'last seen long time ago',
     lastSeenDefault = 'last seen',
-    yearsOldShort = 'y. o.',
+    yearsOldShort = () => 'y. o.',
 }: {
     is24HourFormat?: boolean,
     today?: string,
@@ -45,7 +40,7 @@ export const createDateTimeFormatter = ({
     lastSeenTwoDays?: string,
     lastSeenLongTime?: string,
     lastSeenDefault?: string,
-    yearsOldShort?: string,
+    yearsOldShort?: (age: number) => string,
 } = {}) => {
 
     const getValidatedDate = (day: number, month: number, year: number) => {
@@ -83,16 +78,13 @@ export const createDateTimeFormatter = ({
 
     function formatAbsoluteDate(date: number, withYear?: boolean) {
         const dt = new Date(date);
-        const month = months[dt.getMonth()];
-        const day = dt.getDate();
+        const now = new Date();
 
-        if (withYear) {
-            const now = new Date();
-
-            return month + ' ' + day + (now.getFullYear() !== dt.getFullYear() ? (', ' + dt.getFullYear()) : '');
+        let formatted = moment(dt).format('LL');
+        if (withYear && now.getFullYear() !== dt.getFullYear()) {
+            return formatted;
         }
-
-        return month + ' ' + day;
+        return formatted.split(' ').slice(0, -1).join(' ');
     }
 
     function formatBirthDay(date: number | string) {
@@ -101,10 +93,10 @@ export const createDateTimeFormatter = ({
         const age = new Date(Date.now() - bd.getTime()).getUTCFullYear() - 1970;
 
         if (year === 10000) {
-            return `${bd.getDate()}  ${monthsFull[bd.getMonth()]}`;
+            return moment(bd).format('LL').split(' ').slice(0, 2).join(' ');
         }
 
-        return `${bd.getDate()} ${months[bd.getMonth()]} ${bd.getFullYear()}, ${Math.abs(age)} ${yearsOldShort}`;
+        return `${moment(bd).format('LL')}, ${Math.abs(age)} ${yearsOldShort(Math.abs(age))}`;
     }
 
     function formatTime(date: number) {
@@ -180,7 +172,7 @@ export const createDateTimeFormatter = ({
     function formatRelativeTime(date: string | number) {
         let time = new Date(typeof date === 'string' ? parseInt(date, 10) : date).getTime();
         if (new Date().getTime() - time < 1000 * 60 * 60 * 24) {
-            return humanize.relativeTime(time / 1000);
+            return moment(time).fromNow();
         } else if (new Date().getTime() - time < 1000 * 60) {
             return justNow;
         } else {
@@ -243,14 +235,12 @@ export const createDateTimeFormatter = ({
                 ? localMoment.format('H:mm')
                 : localMoment.format('h:mm A');
         }
-        return capitalize(moment(date).format('MMM D'));
+        return moment(date).format('ll').split(' ').slice(0, 2).join(' ');
     }
 
     function formatDateFull(date: number, withYear: boolean = false) {
         let dt = new Date(date);
         let now = new Date();
-        let month = monthsFull[dt.getMonth()];
-        let day = dt.getDate();
 
         if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth()) {
             if (now.getDate() === dt.getDate()) {
@@ -260,22 +250,16 @@ export const createDateTimeFormatter = ({
             }
         }
 
-        if (withYear) {
-            if (now.getFullYear() === dt.getFullYear()) {
-                return month + ', ' + day;
-            } else {
-                return dt.getFullYear() + ', ' + month + ' ' + day;
-            }
+        if (withYear && now.getFullYear() !== dt.getFullYear()) {
+            return moment(date).format('LL');
         }
 
-        return month + ', ' + day;
+        return moment(date).format('LL').split(' ').slice(0, 2).join(' ');
     }
 
     function formatDateShort(date: number, withYear: boolean = false) {
         let dt = new Date(date);
         let now = new Date();
-        let month = months[dt.getMonth()];
-        let day = dt.getDate();
 
         if (now.getFullYear() === dt.getFullYear() && now.getMonth() === dt.getMonth()) {
             if (now.getDate() === dt.getDate()) {
@@ -285,15 +269,11 @@ export const createDateTimeFormatter = ({
             }
         }
 
-        if (withYear) {
-            if (now.getFullYear() === dt.getFullYear()) {
-                return month + ', ' + day;
-            } else {
-                return dt.getFullYear() + ', ' + month + ' ' + day;
-            }
+        if (withYear && now.getFullYear() !== dt.getFullYear()) {
+            return moment(date).format('ll');
         }
 
-        return month + ' ' + day;
+        return moment(date).format('ll').split(' ').slice(0, 2).join(' ');
     }
 
     const getEmptyYear = () => EMPTY_YEAR;

@@ -13,7 +13,7 @@ export const AsyncNewMessageDivider = React.memo((props) => {
             <ASFlex height={0.5} backgroundColor={theme.foregroundQuaternary} flexGrow={1} flexShrink={1} flexBasis={0} alignSelf="center" />
             <ASFlex backgroundColor={theme.backgroundPrimary}>
                 <ASText color={theme.foregroundSecondary} fontSize={13} marginLeft={12} marginRight={12}>
-                    {t('newMessage', 'New messages')}
+                    {t('newMessages', 'New messages')}
                 </ASText>
             </ASFlex>
             <ASFlex height={0.5} backgroundColor={theme.foregroundQuaternary} flexGrow={1} flexShrink={1} flexBasis={0} alignSelf="center" />

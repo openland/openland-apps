@@ -142,16 +142,13 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                             }}
                             allowFontScaling={false}
                         >
-                            {t('chooseShortname', {
-                                defaultValue: 'Choose a shortname so other people can find and mention your {{entityType}}',
-                                entityType: props.isChannel
-                                    ? 'channel'
-                                    : props.isGroup
-                                        ? 'group'
-                                        : props.isCommunity
-                                            ? 'community'
-                                            : 'organization'
-                            })}
+                            {props.isChannel
+                                ? t('chooseShortnameChannel')
+                                : props.isGroup
+                                    ? t('chooseShortnameGroup')
+                                    : props.isCommunity
+                                        ? t('chooseShortnameCommunity')
+                                        : t('chooseShortnameOrganization')}
                         </Text>
                     </View>
                 </LinearGradient>

@@ -16,7 +16,7 @@ const DateTimeFormatter = createDateTimeFormatter({
     lastSeenTwoDays: t('dateTime.lastSeenTwoDays'),
     lastSeenLongTime: t('dateTime.lastSeenLongTime'),
     lastSeenDefault: t('dateTime.lastSeenDefault'),
-    yearsOldShort: t('dateTime.yearsOldShort'),
+    yearsOldShort: (age) => t('dateTime.yearsOldShort', { count: age }),
 });
 
 export default DateTimeFormatter;

@@ -35,9 +35,14 @@ const emptyTab = StyleSheet.create({
 const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
     const { t } = useText();
     const texts = {
-        [SharedMediaItemType.MEDIA]: 'media',
-        [SharedMediaItemType.DOCUMENT]: 'files',
-        [SharedMediaItemType.LINK]: 'links',
+        [SharedMediaItemType.MEDIA]: t('media', 'Media').toLowerCase(),
+        [SharedMediaItemType.DOCUMENT]: t('files', 'Files').toLowerCase(),
+        [SharedMediaItemType.LINK]: t('links', 'Links').toLowerCase(),
+    };
+    const titles = {
+        [SharedMediaItemType.MEDIA]: t('sharedMediaEmptyMedia'),
+        [SharedMediaItemType.DOCUMENT]: t('sharedMediaEmptyFiles'),
+        [SharedMediaItemType.LINK]: t('sharedMediaEmptyLinks'),
     };
     const theme = useThemeGlobal();
     const imgSrc = theme.type === 'Light' ? require('assets/art-empty.png') : require('assets/art-empty-dark.png');
@@ -50,10 +55,7 @@ const EmptyTab = React.memo(({ type }: { type: SharedMediaItemType }) => {
             />
             <View style={emptyTab.textWrapper}>
                 <Text style={[emptyTab.title, { color: theme.foregroundPrimary }]}>
-                    {t('sharedMediaEmpty', {
-                        mediaType: texts[type],
-                        defaultValue: 'No {{mediaType}} yet'
-                    })}
+                    {titles[type]}
                 </Text>
                 <Text style={[emptyTab.subtitle, { color: theme.foregroundSecondary }]}>
                     {t('sharedMediaEmptyDescription', {

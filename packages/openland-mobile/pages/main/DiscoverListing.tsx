@@ -19,6 +19,7 @@ import { DownloadManagerInstance } from 'openland-mobile/files/DownloadManager';
 import { DiscoverCover } from './components/discover/DiscoverCover';
 import { isPad } from '../Root';
 import { ZFollowButton } from 'openland-mobile/components/ZFollowButton';
+import { useText } from 'openland-mobile/text/useText';
 interface DiscoverFollowButtonProps {
     isFollowing: boolean;
     room: DiscoverRoom;
@@ -144,6 +145,7 @@ export const getRandomSeed = (): number => {
 };
 
 const DiscoverNewListing = (props: DiscoverListingPageProps) => {
+    const { t } = useText();
     const [rooms, setRooms] = React.useState(props.initialRooms);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
@@ -176,7 +178,7 @@ const DiscoverNewListing = (props: DiscoverListingPageProps) => {
 
     return (
         <DiscoverListingContent
-            title="New groups"
+            title={t('discoverNewGroups')}
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -185,6 +187,7 @@ const DiscoverNewListing = (props: DiscoverListingPageProps) => {
 };
 
 const DiscoverPopularListing = (props: DiscoverListingPageProps) => {
+    const { t } = useText();
     const [rooms, setRooms] = React.useState(props.initialRooms);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
@@ -216,7 +219,7 @@ const DiscoverPopularListing = (props: DiscoverListingPageProps) => {
 
     return (
         <DiscoverListingContent
-            title="Popular now"
+            title={t('discoverPopular')}
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -225,6 +228,7 @@ const DiscoverPopularListing = (props: DiscoverListingPageProps) => {
 };
 
 const DiscoverTopFreeListing = (props: DiscoverListingPageProps) => {
+    const { t } = useText();
     const [rooms, setRooms] = React.useState(props.initialRooms);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
@@ -256,7 +260,7 @@ const DiscoverTopFreeListing = (props: DiscoverListingPageProps) => {
 
     return (
         <DiscoverListingContent
-            title="Top groups"
+            title={t('discoverTopGroups')}
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -265,6 +269,7 @@ const DiscoverTopFreeListing = (props: DiscoverListingPageProps) => {
 };
 
 const DiscoverTopPremiumListing = (props: DiscoverListingPageProps) => {
+    const { t } = useText();
     const [rooms, setRooms] = React.useState(props.initialRooms);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
@@ -296,7 +301,7 @@ const DiscoverTopPremiumListing = (props: DiscoverListingPageProps) => {
 
     return (
         <DiscoverListingContent
-            title="Top premium"
+            title={t('discoverPopular')}
             rooms={rooms}
             loading={loading}
             onEndReached={loadMore}
@@ -326,6 +331,7 @@ export const layoutCollectionCover = () => {
 
 const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const [rooms, setRooms] = React.useState<DiscoverRoom[]>([]);
     const [loading, setLoading] = React.useState(false);
     const [title, setTitle] = React.useState(props.title || '');
@@ -385,7 +391,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
     return (
         <>
             <SHeaderButton
-                title="Share"
+                title={t('share')}
                 icon={require('assets/ic-share-24.png')}
                 onPress={() => Share.share({
                     message: shortname ? `https://openland.com/${shortname}` : `https://openland.com/discover/collections/${props.collectionId}`
@@ -403,6 +409,7 @@ const DiscoverCollectionsListing = (props: DiscoverCollectionsListingProps) => {
 };
 
 const DiscoverRecommendationsListing = (props: { initialRooms: DiscoverRoom[] }) => {
+    const { t } = useText();
     const [rooms, setRooms] = React.useState(props.initialRooms);
     const [loading, setLoading] = React.useState(false);
     const loadRooms = async () => {
@@ -419,7 +426,7 @@ const DiscoverRecommendationsListing = (props: { initialRooms: DiscoverRoom[] })
 
     return (
         <DiscoverListingContent
-            title="Recommendations"
+            title={t('discoverRecommendations')}
             rooms={rooms}
             loading={loading}
         />
@@ -432,6 +439,7 @@ interface DiscoverListingOrgsPageProps {
 }
 
 const DiscoverTopOrgsListing = (props: DiscoverListingOrgsPageProps) => {
+    const { t } = useText();
     const [orgs, setOrgs] = React.useState(props.initialOrgs);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
@@ -463,7 +471,7 @@ const DiscoverTopOrgsListing = (props: DiscoverListingOrgsPageProps) => {
 
     return (
         <DiscoverOrgsListing
-            title="Top communities"
+            title={t('discoverTopCommunities')}
             orgs={orgs}
             loading={loading}
             onEndReached={loadMore}
@@ -477,6 +485,7 @@ interface DiscoverListingOrgsPageProps {
 }
 
 const DiscoverNewOrgsListing = (props: DiscoverListingOrgsPageProps) => {
+    const { t } = useText();
     const [orgs, setOrgs] = React.useState(props.initialOrgs);
     const [loading, setLoading] = React.useState(false);
     const [after, setAfter] = React.useState<string | null>(props.initialAfter);
@@ -509,7 +518,7 @@ const DiscoverNewOrgsListing = (props: DiscoverListingOrgsPageProps) => {
 
     return (
         <DiscoverOrgsListing
-            title="New communities"
+            title={t('discoverNewCommunities')}
             orgs={orgs}
             loading={loading}
             onEndReached={loadMore}

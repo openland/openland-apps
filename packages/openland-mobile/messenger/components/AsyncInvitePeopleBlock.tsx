@@ -70,13 +70,16 @@ export const AsyncInvitePeopleBlock = React.memo((props: AsyncInvitePeopleBlockP
                 backgroundColor={theme.accentPrimary}
                 borderRadius={18}
                 height={36}
-                width={137}
+                flexGrow={1}
+                flexShrink={1}
                 onPress={onInvitePress}
             >
                 <ASText
                     {...TextStylesAsync.Label1}
                     color={theme.foregroundInverted}
                     lineHeight={19}
+                    marginLeft={6}
+                    marginRight={6}
                 >
                     {t('inviteFriends', 'Invite friends')}
                 </ASText>

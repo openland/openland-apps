@@ -25,14 +25,14 @@ const SettingsLicensesComponent = React.memo(() => {
     const { t } = useText();
     return (
         <>
-            <SHeader title="Licenses" />
+            <SHeader title={t('licenses')} />
             <SScrollView>
                 <View style={{ paddingHorizontal: 16, marginTop: 16 }}>
                     <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary }}>
                         {t('illustrationsBy', 'Product illustrations by')} <Link path="https://icons8.com/">Icons 8</Link>
                     </Text>
                     <Text style={{ ...TextStyles.Body, color: theme.foregroundPrimary, marginTop: 16 }}>
-                        {t('collectionsCoversBy', 'Editors’ choice and collections covers by')} <Link path="https://freepik.com/stories">stories</Link> and <Link path="https://freepik.com/pikisuperstar">pikisuperstar</Link>
+                        {t('collectionsCoversBy', 'Editors’ choice and collections covers by')} <Link path="https://freepik.com/stories">stories</Link> {t('and')} <Link path="https://freepik.com/pikisuperstar">pikisuperstar</Link>
                     </Text>
                 </View>
             </SScrollView>

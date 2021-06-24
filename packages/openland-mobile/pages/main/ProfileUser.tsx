@@ -35,7 +35,7 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { UserPhotoUploaderNew } from './components/UserPhotoUploaderNew';
 import { useLocalContact } from 'openland-y-utils/contacts/LocalContacts';
 import { CurrentVoiceChat } from './components/CurrentVoiceChat';
-import { capitalize, useText } from 'openland-mobile/text/useText';
+import { useText } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 
 const { formatAbsoluteDate, formatBirthDay } = DateTimeFormatter;
@@ -113,7 +113,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
         return <ProfileDeleted photo={user.photo} id={user.id} title={user.name} />;
     }
 
-    let messageButtonTitle = capitalize(t('message', 'Message'));
+    let messageButtonTitle = t('messageAction');
     if (profileType === 'my') {
         messageButtonTitle = t('editProfile', 'Edit profile');
     } else if (profileType === 'bot') {
@@ -268,7 +268,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followingCount}
                 </Text>
-                <Text> {t('following', 'following').toLowerCase()}</Text>
+                <Text> {t('followingCount', 'following')}</Text>
             </Text>
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} onPress={onFollowersPress} allowFontScaling={false}>
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
@@ -332,7 +332,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     />
                     {profileType === 'user' && (
                         <ZButton
-                            title={user.followedByMe ? t('following', 'Following') : t('follow', 'Follow')}
+                            title={user.followedByMe ? t('followed') : t('follow', 'Follow')}
                             size="xlarge"
                             marginLeft={16}
                             style={user.followedByMe ? 'secondary' : 'primary'}
@@ -375,7 +375,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                     )}
                     {!!user.joinDate && (
                         <ZListItem
-                            text={`Joined ${formatAbsoluteDate(parseInt(user.joinDate, 10), true)}`}
+                            text={t('joinedDate', { date: formatAbsoluteDate(parseInt(user.joinDate, 10), true) })}
                             leftIcon={require('assets/ic-flag-24.png')}
                             small={true}
                         />
@@ -469,7 +469,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                                 key={`group-${item.id}`}
                                 leftAvatar={{ photo: item.photo, id: item.id }}
                                 text={item.title}
-                                subTitle={t('member', { count: item.membersCount, defaultValue: 'member' })}
+                                subTitle={item.membersCount + ' ' + t('member', { count: item.membersCount, defaultValue: 'member' })}
                                 path="Conversation"
                                 pathParams={{ id: item.id }}
                             />
