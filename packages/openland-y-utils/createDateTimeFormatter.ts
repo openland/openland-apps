@@ -11,6 +11,8 @@ const thinSpace = '\u2009';
 const dateToday = new Date();
 const date1900 = new Date('1900-01-01');
 
+const shortLocalDate = (dateStr: string) => dateStr.split(' ').slice(0, 2).join(' ').replace(',', '');
+
 export const createDateTimeFormatter = ({
     is24HourFormat = false,
     today = 'Today',
@@ -93,7 +95,7 @@ export const createDateTimeFormatter = ({
         const age = new Date(Date.now() - bd.getTime()).getUTCFullYear() - 1970;
 
         if (year === 10000) {
-            return moment(bd).format('LL').split(' ').slice(0, 2).join(' ');
+            return shortLocalDate(moment(bd).format('LL'));
         }
 
         return `${moment(bd).format('LL')}, ${Math.abs(age)} ${yearsOldShort(Math.abs(age))}`;
@@ -235,7 +237,7 @@ export const createDateTimeFormatter = ({
                 ? localMoment.format('H:mm')
                 : localMoment.format('h:mm A');
         }
-        return moment(date).format('ll').split(' ').slice(0, 2).join(' ');
+        return shortLocalDate(moment(date).format('ll'));
     }
 
     function formatDateFull(date: number, withYear: boolean = false) {
@@ -254,7 +256,7 @@ export const createDateTimeFormatter = ({
             return moment(date).format('LL');
         }
 
-        return moment(date).format('LL').split(' ').slice(0, 2).join(' ');
+        return shortLocalDate(moment(date).format('LL'));
     }
 
     function formatDateShort(date: number, withYear: boolean = false) {
@@ -273,7 +275,7 @@ export const createDateTimeFormatter = ({
             return moment(date).format('ll');
         }
 
-        return moment(date).format('ll').split(' ').slice(0, 2).join(' ');
+        return shortLocalDate(moment(date).format('ll'));
     }
 
     const getEmptyYear = () => EMPTY_YEAR;
