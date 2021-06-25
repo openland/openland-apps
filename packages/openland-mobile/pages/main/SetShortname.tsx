@@ -167,7 +167,9 @@ const SetShortnameContent = React.memo((props: PageProps & ContentProps) => {
                     {!error && shortnameError && <RemarkText text={shortnameError} error={true} />}
                     {!error && !shortnameError && (
                         <RemarkText
-                            text={t('shortnameDescription', 'Only a-z, 0-9 and underscores, at least 3 chars')}
+                            text={shortnameField.value
+                                ? t('shortnameDescription', { path: shortnameField.value, defaultValue: `This link opens a chat with you:\nopenland.com/{{path}}` })
+                                : ''}
                             error={false}
                         />
                     )}
