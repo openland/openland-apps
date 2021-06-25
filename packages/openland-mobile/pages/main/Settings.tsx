@@ -20,6 +20,7 @@ import { rateApp } from './modals/RateApp';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { useText } from 'openland-mobile/text/useText';
+import { useSupportRoom } from 'openland-mobile/utils/useSupportRoom';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -46,6 +47,7 @@ const SettingsContent = ((props: PageProps) => {
     const theme = React.useContext(ThemeContext);
     const client = getClient();
     const messenger = getMessenger();
+    const navigateToSupport = useSupportRoom();
     const { t } = useText();
     const me = messenger.engine.user;
 
@@ -169,7 +171,7 @@ const SettingsContent = ((props: PageProps) => {
                     leftIconColor={theme.tintCyan}
                     leftIcon={require('assets/ic-help-glyph-24.png')}
                     text={t('helpAndFeedback', 'Help and feedback')}
-                    onPress={() => props.router.push('Conversation', { flexibleId: '9KkDvyowQgcYAn0WvYgXFrdqAp' })}
+                    onPress={navigateToSupport}
                 />
                 <ZListItem
                     leftIconColor={theme.tintBlue}

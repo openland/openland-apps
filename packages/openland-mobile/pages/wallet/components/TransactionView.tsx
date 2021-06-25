@@ -1,16 +1,18 @@
 import * as React from 'react';
-import { WalletTransactionFragment } from 'openland-api/spacex.types';
+import { SRouterContext } from 'react-native-s/SRouterContext';
 import { View, Text, Image, TouchableWithoutFeedback } from 'react-native';
+
+import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { showPayComplete } from 'openland-mobile/pages/main/modals/PayComplete';
 import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { TextStyles, RadiusStyles } from 'openland-mobile/styles/AppStyles';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { showTransactionInfo } from 'openland-mobile/pages/main/modals/TransactionInfo';
-import { SRouterContext } from 'react-native-s/SRouterContext';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { useText } from 'openland-mobile/text/useText';
 import { useConvertedTransaction } from 'openland-mobile/utils/useConvertedTransaction';
+import { useSupportRoom } from 'openland-mobile/utils/useSupportRoom';
 
 interface TransactionViewProps {
     item: WalletTransactionFragment;
@@ -19,6 +21,7 @@ interface TransactionViewProps {
 export const TransactionView = (props: TransactionViewProps) => {
     const theme = React.useContext(ThemeContext);
     const router = React.useContext(SRouterContext)!;
+    const navigateToSupport = useSupportRoom();
     const { t } = useText();
 
     const { avatar, title, type, dateTime, status, amount, source, group } = useConvertedTransaction(
@@ -172,7 +175,7 @@ export const TransactionView = (props: TransactionViewProps) => {
                                 marginLeft: 6,
                             }}
                             allowFontScaling={false}
-                            onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
+                            onPress={navigateToSupport}
                         >
                             {t('contactUs', 'Contact us')}
                         </Text>

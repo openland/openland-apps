@@ -15,17 +15,19 @@ import { useTheme } from 'openland-mobile/themes/ThemeContext';
 import { ZButton } from 'openland-mobile/components/ZButton';
 import { TextStyles } from 'openland-mobile/styles/AppStyles';
 import { Money } from 'openland-y-utils/wallet/Money';
+import { useText } from 'openland-mobile/text/useText';
+import { useSupportRoom } from 'openland-mobile/utils/useSupportRoom';
 
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
 import { AddCardItem } from './components/AddCardItem';
 import { showWithdrawFunds } from './components/showWithdrawFunds';
-import { useText } from 'openland-mobile/text/useText';
 
 const WalletComponent = React.memo<PageProps>((props) => {
     const client = useClient();
     const theme = useTheme();
     const { t } = useText();
+    const navigateToSupport = useSupportRoom();
     const router = React.useContext(SRouterContext)!;
     const walletEngine = getMessenger().engine.wallet;
     const walletState = walletEngine.state.useState();
@@ -77,7 +79,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                         flexGrow={1}
                         flexShrink={1}
                         style="secondary"
-                        onPress={() => router.push('ProfileUser', { id: 'zoebp1bZA0F5P5oL5ZgrFwEMA4' })}
+                        onPress={navigateToSupport}
                     />
                 </View>
             </LinearGradient>
