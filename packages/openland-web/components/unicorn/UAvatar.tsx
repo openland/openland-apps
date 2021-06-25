@@ -245,8 +245,6 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
     const dotBorder = selected ? 'var(--accentMuted)' : 'var(--backgroundPrimary)';
     const dotBackground = dotColor ? dotColor : selected ? 'var(--foregroundContrast)' : 'var(--accentPrimary)';
 
-    const isRealSquared = squared && (photo || uuid) && !photo?.startsWith('ph://');
-
     return (
         <XView height={boxSize} width={boxSize} cursor={props.onClick || props.path ? 'pointer' : undefined} {...other}>
             <div
@@ -264,7 +262,7 @@ export const UAvatar = React.memo((props: UAvatarProps) => {
                 <XView
                     width="100%"
                     height="100%"
-                    borderRadius={isRealSquared ? 0 : boxSize / 2}
+                    borderRadius={squared ? 0 : boxSize / 2}
                     overflow="hidden"
                 >
                     {content}

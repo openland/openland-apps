@@ -72,13 +72,16 @@ export const AvatarBauhaus = (props: { name: string; size: number | string }) =>
                 width={SIZEBAUHAUS}
                 height={SIZEBAUHAUS}
             >
-                <rect width={SIZEBAUHAUS} height={SIZEBAUHAUS} rx={SIZEBAUHAUS / 2} fill="#fff" />
+                <rect
+                    width={SIZEBAUHAUS}
+                    height={SIZEBAUHAUS}
+                    fill="#fff"
+                />
             </mask>
             <g mask="url(#mask__bauhaus)">
                 <rect
                     width={SIZEBAUHAUS}
                     height={SIZEBAUHAUS}
-                    rx={SIZEBAUHAUS / 2}
                     fill={properties[0].color}
                 />
                 <rect
