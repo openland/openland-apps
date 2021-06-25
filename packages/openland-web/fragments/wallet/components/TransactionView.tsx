@@ -3,7 +3,7 @@ import { WalletTransactionFragment } from 'openland-api/spacex.types';
 import { UListItem } from 'openland-web/components/unicorn/UListItem';
 import { showConfirmPayment } from '../modals/showConfirmPayment';
 import { showTransaction } from '../modals/showTransaction';
-import { XView, XViewRouterContext } from 'react-mental';
+import { XView } from 'react-mental';
 import { TextStyles } from 'openland-web/utils/TextStyles';
 import { css } from 'linaria';
 import FailureIcon from 'openland-icons/s/ic-failure-16.svg';

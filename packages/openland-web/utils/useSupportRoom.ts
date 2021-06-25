@@ -14,4 +14,4 @@ export function useSupportRoom() {
     }, [supportRoom.room]);
 
     return navigateToSupport;
-};
+}
