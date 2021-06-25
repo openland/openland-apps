@@ -19,6 +19,7 @@ import { showAddCard } from './modals/showAddCard';
 import { CardView } from './components/CardView';
 import { TransactionView } from './components/TransactionView';
 import { showWithdrawFunds } from './components/WithdrawFunds';
+import { useSupportRoom } from 'openland-web/utils/useSupportRoom';
 
 const balanceWrapper = css`
     flex-direction: row;
@@ -39,6 +40,7 @@ export const WalletFragment = React.memo(() => {
     const client = useClient();
     const router = React.useContext(XViewRouterContext)!;
     const messenger = React.useContext(MessengerContext);
+    const navigateToSupport = useSupportRoom();
     const walletEngine = messenger.wallet;
     const walletState = walletEngine.state.useState();
     const cards = client.useMyCards({ fetchPolicy: 'cache-and-network' }).myCards;
@@ -112,7 +114,7 @@ export const WalletFragment = React.memo(() => {
                         size="large"
                         flexGrow={1}
                         style="secondary"
-                        onClick={() => router.navigate('/support')}
+                        onClick={navigateToSupport}
                     />
                 </XView>
             </UListGroup>

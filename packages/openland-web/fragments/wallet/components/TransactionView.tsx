@@ -11,6 +11,7 @@ import { UIcon } from 'openland-web/components/unicorn/UIcon';
 import { DepositAvatar } from './DepositAvatar';
 import { UButton } from 'openland-web/components/unicorn/UButton';
 import { useConvertedTransaction } from 'openland-web/utils/useConvertedTransaction';
+import { useSupportRoom } from 'openland-web/utils/useSupportRoom';
 
 const arrowBox = css`
     position: absolute;
@@ -59,7 +60,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
         source,
         group,
     } = useConvertedTransaction(props.item);
-    const router = React.useContext(XViewRouterContext)!;
+    const navigateToSupport = useSupportRoom();
     const payment = source.operation.payment;
     const actionRequired = status === 'failing';
     const color =
@@ -127,7 +128,7 @@ export const TransactionView = React.memo((props: TransactionViewProps) => {
                     </XView>
                     <XView flexDirection="row" marginTop={8} color="var(--foregroundPrimary)">
                         Need help?
-                        <span className={contactUs} onClick={() => router.navigate('/support')}>
+                        <span className={contactUs} onClick={navigateToSupport}>
                             Contact us
                         </span>
                     </XView>

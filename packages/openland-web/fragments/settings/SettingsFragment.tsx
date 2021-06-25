@@ -30,6 +30,7 @@ import { UCounter } from 'openland-unicorn/UCounter';
 import { useIsMobile } from 'openland-web/hooks/useIsMobile';
 import { css } from 'linaria';
 import { XWithRole } from 'openland-x-permissions/XWithRole';
+import { useSupportRoom } from 'openland-web/utils/useSupportRoom';
 
 const ellipsisText = css`
     white-space: nowrap;
@@ -92,6 +93,7 @@ const AccountCounter = React.memo(() => {
 
 export const SettingsFragment = React.memo(() => {
     const isVisible = useVisibleTab();
+    const navigateToSupport = useSupportRoom();
 
     React.useEffect(() => {
         if (isVisible) {
@@ -198,7 +200,7 @@ export const SettingsFragment = React.memo(() => {
                             <UListItem
                                 title="Help and feedback"
                                 icon={<HelpIcon />}
-                                path="/support"
+                                onClick={navigateToSupport}
                             />
                             <UListItem
                                 title="About us"
