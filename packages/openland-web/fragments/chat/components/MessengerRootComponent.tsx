@@ -312,7 +312,6 @@ class MessagesComponent extends React.PureComponent<MessagesComponentProps, Mess
     onChatLostAccess = () => {
         if (this.props.onChatLostAccess) {
             this.unsubscribe();
-            this.props.messenger.removeConversation(this.props.conversationId);
             this.props.onChatLostAccess();
         }
     }

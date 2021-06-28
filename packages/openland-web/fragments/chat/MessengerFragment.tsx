@@ -10,9 +10,12 @@ import { Deferred } from 'openland-unicorn/components/Deferred';
 import { NotFound } from 'openland-unicorn/NotFound';
 import { ChatSearch } from './chatSearch/ChatSearch';
 import { ChatSearchContext } from 'openland-web/pages/root/AppContainer';
+import { useTabRouter } from 'openland-unicorn/components/TabLayout';
 
 export const MessengerFragment = React.memo<{ id: string }>((props) => {
     // Load chat info
+    const tabRouter = useTabRouter();
+    const currentTab = React.useMemo(() => tabRouter.router.currentTab, []);
     const client = useClient();
     const { chatSearchState } = React.useContext(ChatSearchContext)!;
 
@@ -31,6 +34,7 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
         : undefined;
 
     const onChatLostAccess = React.useCallback(async () => {
+        tabRouter.router.reset('/mail', undefined, currentTab);
         await client.refetchRoomChat({ id: props.id });
     }, []);
 
@@ -42,7 +46,12 @@ export const MessengerFragment = React.memo<{ id: string }>((props) => {
 
     // Check group state
     const header = React.useMemo(
-        () => chatSearchState.chatId === chat!.id ? <ChatSearch chatId={chat!.id} /> : <ChatHeader chat={chat!} />,
+        () =>
+            chatSearchState.chatId === chat!.id ? (
+                <ChatSearch chatId={chat!.id} />
+            ) : (
+                <ChatHeader chat={chat!} />
+            ),
         [chat, chatSearchState.chatId],
     );
 

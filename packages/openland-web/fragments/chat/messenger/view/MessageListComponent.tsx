@@ -10,7 +10,6 @@ import {
 import { Account_me, SharedRoomKind, RoomChat_room } from 'openland-api/spacex.types';
 import { css } from 'linaria';
 import { DataSourceRender } from './DataSourceRender';
-import { DataSource } from 'openland-y-utils/DataSource';
 import {
     DataSourceWebMessageItem,
     buildMessagesDataSource,
@@ -48,8 +47,6 @@ const loaderClass = css`
     position: relative;
 `;
 
-const dss = new Map<string, DataSource<DataSourceWebMessageItem | DataSourceDateItem>>();
-
 export class MessageListComponent extends React.PureComponent<MessageListProps, { bottomAttached?: boolean }> {
     scroller = React.createRef<any>();
     innerScrollRef = React.createRef<HTMLDivElement>();
@@ -57,13 +54,8 @@ export class MessageListComponent extends React.PureComponent<MessageListProps, 
 
     constructor(props: MessageListProps) {
         super(props);
-        if (dss.has(props.conversationId)) {
-            this.dataSource = new DataSourceWindow(dss.get(props.conversationId)!, 20);
-        } else {
-            let b = buildMessagesDataSource(props.conversation.dataSource);
-            dss.set(props.conversationId, b);
-            this.dataSource = new DataSourceWindow(b, 20);
-        }
+        const b = buildMessagesDataSource(props.conversation.dataSource);
+        this.dataSource = new DataSourceWindow(b, 40);
         this.state = { bottomAttached: false };
     }
 

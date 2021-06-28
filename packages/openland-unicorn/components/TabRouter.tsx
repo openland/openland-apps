@@ -190,15 +190,19 @@ export class TabRouter {
         return;
     }
 
-    reset(path: string, historyReset?: boolean) {
+    reset(path: string, historyReset?: boolean, tab?: number) {
 
         //
         // Ignore navigation if url is not changed
         // otherwise next.js won't push new page to history
         //
         if (NextRouter.asPath !== path) {
-            this.stacks[this.currentTab].reset(path);
-            this.pushHistory(path, historyReset);
+            if (tab) {
+                this.stacks[tab].reset(path);
+            } else {
+                this.stacks[this.currentTab].reset(path);
+            }
+            this.pushHistory(path, historyReset, tab);
             return;
         }
     }
@@ -268,11 +272,11 @@ export class TabRouter {
         return destUrl;
     }
 
-    private pushHistory = (path: string, replace?: boolean) => {
+    private pushHistory = (path: string, replace?: boolean, tab?: number) => {
         let stacks = this.stacks.map((s) => s.pages.map((v) => v.path));
         let state: TabHistoryRecord = {
             id: this.id,
-            tab: this.currentTab,
+            tab: tab !== undefined ? tab : this.currentTab,
             stacks: stacks.map((v) => ({ pages: v }))
         };
         console.log('push', {

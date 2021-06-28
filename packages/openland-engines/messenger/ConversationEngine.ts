@@ -1057,6 +1057,7 @@ export class ConversationEngine implements MessageSendHandler {
             for (let l of this.listeners) {
                 l.onChatLostAccess();
             }
+            this.engine.removeConversation(this.conversationId);
         } else if (event.__typename === 'ChatUpdated') {
             this.pinId = (event.chat && event.chat.pinnedMessage) ? event.chat.pinnedMessage.id : undefined;
             this.canReply = getCanReply(event.chat);

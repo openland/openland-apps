@@ -327,7 +327,7 @@ const MenuComponent = (props: { ctx: UPopperController; id: string; isBanned: bo
         });
     }
 
-    const deleteChat = false;
+    const deleteChat = true;
 
     if (privateRoom && !isSavedMessages && deleteChat) {
         res.item({
