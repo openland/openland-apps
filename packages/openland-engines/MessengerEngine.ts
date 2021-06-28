@@ -20,6 +20,7 @@ import { InMemoryKeyValueStore } from 'openland-y-utils/InMemoryKeyValueStore';
 import { WalletEngine } from './wallet/WalletEngine';
 import { Persistence } from './persistence/Persistence';
 import { VoiceChatEngine } from './VoiceChatEngine';
+import { EventNotifier } from 'openland-y-utils/pubsub';
 
 const log = createLogger('Engine');
 
@@ -39,6 +40,7 @@ export class MessengerEngine {
     readonly activeConversations = new Map<string, ConversationEngine>();
     readonly wallet: WalletEngine;
     readonly experimentalUpdates: UpdatesEngine | null;
+    readonly onConversationDeletion = new EventNotifier<{ cid: string }>();
 
     private readonly activeUserConversations = new Map<string, ConversationEngine>();
     private readonly mountedConversations = new Map<string, { count: number; unread: number }>();
@@ -146,6 +148,7 @@ export class MessengerEngine {
             }
             conversationToDestroy.destroy();
             this.activeConversations.delete(conversationId);
+            this.onConversationDeletion.emit({ cid: conversationId });
         }
     }
 

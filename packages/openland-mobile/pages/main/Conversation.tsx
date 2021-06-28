@@ -183,6 +183,11 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
         }
     }
 
+    onChatLostAccess = () => {
+        this.engine.destroy();
+        this.props.router.pushAndResetRoot('Home');
+    }
+
     saveDraft = () => {
         AsyncStorage.multiSet([
             ['compose_draft_' + this.props.chat.id, this.state.text],
@@ -595,7 +600,7 @@ class ConversationRoot extends React.Component<ConversationRootProps, Conversati
                                 })
                             }}
                         >
-                            <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} isBanned={isBanned} />
+                            <ConversationView inverted={true} engine={this.engine} onScroll={this.handleScroll} isBanned={isBanned} onChatLostAccess={this.onChatLostAccess} />
                             {pinnedMessage && !isBanned && (
                                 <PinnedMessage
                                     message={pinnedMessage}

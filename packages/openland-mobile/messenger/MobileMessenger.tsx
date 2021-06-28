@@ -49,8 +49,8 @@ import { ReactionsPicker } from './components/ReactionsPicker';
 import { NotificationCenterHandlers } from 'openland-mobile/notificationCenter/NotificationCenterHandlers';
 import { DataSource } from 'openland-y-utils/DataSource';
 import { AsyncInvitePeopleBlock } from './components/AsyncInvitePeopleBlock';
-import { t } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+import { t } from 'openland-mobile/text/useText';
 
 export const useForward = (sourceId: string, disableSource?: boolean) => {
     const messenger = getMessenger().engine;
@@ -115,6 +115,10 @@ export class MobileMessenger {
             engine.notificationCenter.dataSource,
             item => <NotificationCenterItemAsync item={item} />
         );
+
+        this.engine.onConversationDeletion.subscribe(({ cid }) => {
+            this.resetConversation(cid);
+        });
     }
 
     // return right-side router on tablets if exists, otherwise default router

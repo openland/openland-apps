@@ -12,6 +12,9 @@ import { showBlanketModal } from 'openland-mobile/components/showBlanketModal';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
 import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useText } from 'openland-mobile/text/useText';
+import { QueryCacheProvider } from '@openland/spacex';
+import { GQLClientContext, useClient } from 'openland-api/useClient';
+import { getClient } from 'openland-mobile/utils/graphqlClient';
 
 interface DeleteChatComponentProps {
     chatId: string;
@@ -21,6 +24,7 @@ interface DeleteChatComponentProps {
 
 const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
     const theme = React.useContext(ThemeContext);
+    const client = useClient();
     const { t } = useText();
     const [oneSide, setOneSide] = React.useState(true);
     const [state, setState] = React.useState<'initial' | 'done' | 'error'>('initial');
@@ -30,8 +34,9 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
     const contentView = new SAnimatedShadowView(key + '--ctns', { opacity: 1 });
     const overlayView = new SAnimatedShadowView(key + '--overlay', { opacity: 0 });
 
-    const onDelete = React.useCallback(() => {
-        // console.log('12312312312312', oneSide);
+    const onDelete = React.useCallback(async () => {
+        await client.mutateChatDelete({ chatId: props.chatId, oneSide: oneSide });
+        props.hide();
     }, [oneSide]);
 
     const onSuccess = React.useCallback(async () => {
@@ -105,13 +110,19 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
                         }}
                         allowFontScaling={false}
                     >
-                        {t('conversationDeleteDescription', 'Are you sure you want to delete conversation? This cannot be undone.')}
+                        {t(
+                            'conversationDeleteDescription',
+                            'Are you sure you want to delete conversation? This cannot be undone.',
+                        )}
                     </Text>
                 </View>
                 <View style={{ paddingHorizontal: 8 }}>
                     <ZListItem
-                        text={t('conversationDeleteBoth', { username: props.userName, defaultValue: 'Delete for me and {{username}}' })}
-                        checkmark={oneSide}
+                        text={t('conversationDeleteBoth', {
+                            userName: props.userName,
+                            defaultValue: 'Delete for me and {{userName}}',
+                        })}
+                        checkmark={!oneSide}
                         checkmarkType="checkbox"
                         onPress={() => setOneSide(!oneSide)}
                     />
@@ -180,7 +191,13 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
 
 export const showDeleteChatConfirmation = (chatId: string, userName: string) => {
     showBlanketModal(
-        (ctx) => <DeleteChatComponent chatId={chatId} userName={userName} hide={ctx.hide} />,
+        (ctx) => (
+            <GQLClientContext.Provider value={getClient()}>
+                <QueryCacheProvider>
+                    <DeleteChatComponent chatId={chatId} userName={userName} hide={ctx.hide} />
+                </QueryCacheProvider>
+            </GQLClientContext.Provider>
+        ),
         {
             ignoreSafeArea: true,
         },

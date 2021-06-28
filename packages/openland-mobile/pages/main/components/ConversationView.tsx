@@ -19,6 +19,7 @@ export interface MessagesListProps {
     inverted: boolean;
     onScroll?: (event?: NativeSyntheticEvent<any>) => void;
     isBanned: boolean;
+    onChatLostAccess: () => void;
 }
 export const androidMessageInputListOverlap = 52;
 
@@ -67,6 +68,8 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
 
     onChatLostAccess = () => {
         console.warn('onChatLostAccess');
+        this.unsubscribe();
+        this.props.onChatLostAccess();
     }
 
     componentWillMount() {
@@ -86,7 +89,7 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
         // }
     }
 
-    componentWillUnmount() {
+    unsubscribe = () => {
         if (this.unmount) {
             this.unmount();
             this.unmount = null;
@@ -95,6 +98,10 @@ class ConversationViewComponent extends React.PureComponent<MessagesListProps & 
             this.unmount2();
             this.unmount2 = null;
         }
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
     }
 
     sendWave = () => {

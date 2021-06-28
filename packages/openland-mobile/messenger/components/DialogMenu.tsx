@@ -46,8 +46,6 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
         }, false, require('assets/ic-attach-24.png'));
     }
 
-    const deleteChat = false;
-
     if (!isSavedMessages) {
         builder.action(
             isContact ? t('contactsRemove', 'Remove from contacts') : t('contactsSave', 'Save to contacts'),
@@ -65,14 +63,12 @@ const DialogMenuPrivate = React.memo((props: DialogMenuProps) => {
             false,
             isContact ? require('assets/ic-invite-off-24.png') : require('assets/ic-invite-24.png'),
         );
-        if (deleteChat) {
-            builder.action(
-                t('conversationDelete', 'Delete conversation'),
-                () => showDeleteChatConfirmation(item.key, user.name),
-                false,
-                require('assets/ic-delete-24.png'),
-            );
-        }
+        builder.action(
+            t('conversationDelete', 'Delete conversation'),
+            () => showDeleteChatConfirmation(item.key, user.name),
+            false,
+            require('assets/ic-delete-24.png'),
+        );
     }
 
     return builder.renderItems(ctx);
