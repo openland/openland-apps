@@ -787,7 +787,9 @@ const DeleteChatComponent = React.memo(
                     <div>Are you sure you want to delete conversation? This cannot be undone.</div>
                     <UCheckbox
                         label={`Delete for me and ${props.userName}`}
-                        onChange={setOneSide}
+                        onChange={(v) => {
+                            setOneSide(!v);
+                        }}
                         checked={!oneSide}
                         squared={true}
                         withCorners={true}
