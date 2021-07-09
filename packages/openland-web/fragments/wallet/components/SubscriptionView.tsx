@@ -32,10 +32,7 @@ export const SubscriptionView = React.memo((props: SubscriptionConverted) => {
     return (
         <div
             className={subsciptionView}
-            onClick={() => props.state === WalletSubscriptionState.GRACE_PERIOD || props.state === WalletSubscriptionState.RETRYING
-                ? router.navigate('/wallet')
-                : showSubscription(props, client, router)
-            }
+            onClick={() => showSubscription(props, client, router)}
         >
             {props.id && props.title && (
                 <UAvatar
