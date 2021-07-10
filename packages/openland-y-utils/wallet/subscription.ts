@@ -7,6 +7,7 @@ import {
 import { t } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import { formatMoney } from 'openland-y-utils/wallet/Money';
+import moment from 'moment';
 
 export interface SubscriptionConverted {
     product: Subscriptions_subscriptions_product;
@@ -27,11 +28,11 @@ export const displaySubscriptionDate = (date: Date) => {
     return DateTimeFormatter.formatAbsoluteDate(unixNumber);
 };
 
-const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
+const generateSubTitle = (expires: Date, renews: Date, state: WalletSubscriptionState) => {
     const date = displaySubscriptionDate(expires);
 
     const variants: { [key in WalletSubscriptionState]: string } = {
-        [WalletSubscriptionState.STARTED]: t('subscriptionsStarted', { date, defaultValue: `Next bill on {{date}}` }),
+        [WalletSubscriptionState.STARTED]: t('subscriptionsStarted', { date: renews, defaultValue: `Next bill on {{date}}` }),
         [WalletSubscriptionState.GRACE_PERIOD]: t('subscriptionsPaymentFailed', 'Payment failed'),
         [WalletSubscriptionState.RETRYING]: t('subscriptionsPaymentFailed', 'Payment failed'),
         [WalletSubscriptionState.CANCELED]: t('subscriptionsCanceled', { date, defaultValue: `Expires on {{date}}` }),
@@ -43,7 +44,8 @@ const generateSubTitle = (expires: Date, state: WalletSubscriptionState) => {
 
 export function convertSubscription(subscription: Subscriptions_subscriptions): SubscriptionConverted {
     const expires = new Date(parseInt(subscription.expires, 10));
-    const subtitle = generateSubTitle(expires, subscription.state);
+    const renews = moment(new Date(parseInt(subscription.expires, 10))).add('day', -1).toDate();
+    const subtitle = generateSubTitle(expires, renews, subscription.state);
     const amount = formatMoney(subscription.amount);
     const intervalVariants: { [key in WalletSubscriptionInterval]: string } = {
         [WalletSubscriptionInterval.MONTH]: t('periodShortMonth'),
