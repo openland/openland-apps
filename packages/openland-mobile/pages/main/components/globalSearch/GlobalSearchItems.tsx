@@ -13,6 +13,7 @@ import { ASView } from 'react-native-async-view/ASView';
 import { GlobalSearchProps } from './GlobalSearch';
 import { getMessenger } from 'openland-mobile/utils/messenger';
 import { ASImage } from 'react-native-async-view/ASImage';
+import { useText } from 'openland-mobile/text/useText';
 
 interface ItemBaseProps {
     avatar: JSX.Element;
@@ -117,12 +118,13 @@ export const GlobalSearchItemUser = React.memo((props: ItemUserProps) => {
     const theme = useThemeGlobal();
     const messenger = getMessenger();
     const { item, onPress, renderSavedMessages } = props;
+    const { t } = useText();
     const handlePress = React.useCallback(() => onPress(item.id, item.name), [item]);
     const isSavedMessages = renderSavedMessages && (item.id === messenger.engine.user.id);
 
     return (
         <ItemBase
-            name={isSavedMessages ? 'Saved messages' : item.name}
+            name={isSavedMessages ? t('savedMessages', 'Saved messages') : item.name}
             onPress={handlePress}
             theme={theme}
             proBadge={isSavedMessages ? false : !!item.systemBadge}

@@ -130,6 +130,7 @@ const SetUserShortnameContent = React.memo((props: PageProps) => {
                         text: t('shortnameUserDescription', {
                             defaultValue: 'You can choose a username in Openland.\nOther people will be able to find you by this username, and mention you with this username in groups.\n\nYou can use a-z, 0-9 and underscores.\nMinimum length is {{minLength}} characters.\n\n{{username}}',
                             username: footerUsernameText,
+                            count: minLength,
                             minLength,
                         }),
                         onPress: (link: string) => {

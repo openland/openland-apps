@@ -72,6 +72,7 @@ const CollectionsComponent = () => {
     let [collections, setCollections] = React.useState(initialCollections);
     let [after, setAfter] = React.useState(initialAfter);
     let client = useClient();
+    const { t } = useText();
     let handleLoadMore = async () => {
         if (loading || (!after && collections.length > 0)) {
             return;
@@ -101,7 +102,7 @@ const CollectionsComponent = () => {
 
     return (
         <>
-            <SHeader title="Collections" />
+            <SHeader title={t('collections', 'Collections')} />
             <SFlatList
                 data={collections}
                 renderItem={({ item }) => (

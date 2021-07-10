@@ -43,6 +43,17 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedR
 
     if (typing) {
         accent = true;
+
+        // if (typing.indexOf('are typing') !== -1) {
+        //     subtitle = `${typing.slice(0, -13)} ${t('typing', 'typing')}`;
+        // }
+        //
+        // if (typing.indexOf('is typing') !== -1) {
+        //     subtitle = `${typing.slice(0, -12)} ${t('typing', 'typing')}`;
+        // }
+        //
+        // subtitle = typingType && typingsByType[typingType] || t('typing', 'typing');
+
         subtitle = typing;
     }
 
@@ -211,7 +222,7 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomChat_room_Privat
             pointerEvents="box-none"
         >
             <View style={{ flexDirection: 'row' }}>
-                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{isSavedMessages ? 'Saved messages' : title}</Text>
+                <Text style={[styles.title, { color: theme.foregroundPrimary }]} numberOfLines={1} ellipsizeMode="tail" allowFontScaling={false}>{isSavedMessages ? t('savedMessages', 'Saved messages') : title}</Text>
                 {!!(room.user.systemBadge && !isSavedMessages) && <View style={{ marginLeft: 8, marginTop: Platform.OS === 'ios' ? 0 : 1, marginBottom: Platform.OS === 'ios' ? 0 : -1, alignSelf: 'center' }}><PremiumBadge /></View>}
                 {props.muted && (
                     <Image

@@ -10,6 +10,7 @@ import { useText } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import moment from 'moment';
 import { capitalize } from 'openland-y-utils/capitalize';
+import { getLocale } from '../text/utils';
 
 const { getEmptyYear, getValidatedDate, isValidDate } = DateTimeFormatter;
 const EMPTY_YEAR = getEmptyYear();
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     } as TextStyle,
 });
 
+const isRusLocale = getLocale() === 'ru';
 const getOptions: () => SelectedMonth[] = () => moment().localeData().months().map((item, index) => ({ value: index, label: capitalize(item) }));
 
 type SelectedMonth = { value: number; label: string };
@@ -111,7 +113,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
     return (
         <React.Suspense fallback={null}>
             <View style={{ flexDirection: 'row', marginHorizontal: noWrapper ? 0 : 16 }}>
-                <View style={{ flexShrink: 0, marginRight: 16, minWidth: 72 }}>
+                <View style={{ flexShrink: 0, marginRight: 16, minWidth: 74 }}>
                     <ZInput
                         placeholder={t('day', 'Day')}
                         keyboardType="numeric"
@@ -146,7 +148,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                 </View>
             </View>
             {value && (
-                <TouchableOpacity onPress={onClear} activeOpacity={HighlightAlpha} style={styles.box}>
+                <TouchableOpacity onPress={onClear} activeOpacity={HighlightAlpha} style={{ ...styles.box, right: isRusLocale ? 28 : 8 }}>
                     <Image source={require('assets/ic-delete-16.png')} style={{ tintColor: theme.foregroundTertiary, marginRight: 8 }} />
                     <Text style={[{ color: theme.foregroundTertiary }, styles.title]} allowFontScaling={false}>
                         {t('clear', 'Clear')}

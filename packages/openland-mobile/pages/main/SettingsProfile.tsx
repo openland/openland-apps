@@ -155,7 +155,7 @@ const SettingsProfileComponent = React.memo((props: PageProps) => {
     const { t } = useText();
     return (
         <>
-            <SHeader title={t('editProfile', 'Edit profile')} />
+            <SHeader title={t('profile', 'Profile')} />
             <SettingsProfileContent {...props} />
         </>
     );

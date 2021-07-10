@@ -35,7 +35,7 @@ const SecretLabel = React.memo((props: { isChannel: boolean }) => {
                 allowFontScaling={false}
                 style={{ ...TextStyles.Label2, color: theme.foregroundTertiary }}
             >
-                {t('secretLabel', { entity: props.isChannel ? '$t(channel)' : '$t(channel)', defaultValue: 'It’s a secret {{entity}}' })}
+                {props.isChannel ? t('secretChannelLabel', `It's a secret channel`) : t('secretGroupLabel', `It's a secret group`)}
             </Text>
         </View>
     );

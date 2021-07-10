@@ -268,7 +268,7 @@ const ProfileUserComponent = React.memo((props: PageProps) => {
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
                     {user.followingCount}
                 </Text>
-                <Text> {t('followingCount', 'following')}</Text>
+                <Text> {t('followingCount', { count: user.followingCount, defaultValue: 'following' }).toLowerCase()}</Text>
             </Text>
             <Text style={{ ...TextStyles.Body, color: theme.foregroundSecondary }} onPress={onFollowersPress} allowFontScaling={false}>
                 <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>
