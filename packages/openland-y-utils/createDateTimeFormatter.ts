@@ -86,7 +86,8 @@ export const createDateTimeFormatter = ({
         if (withYear && now.getFullYear() !== dt.getFullYear()) {
             return formatted;
         }
-        return formatted.split(' ').slice(0, -1).join(' ');
+
+        return formatted.split(' ').slice(0, -1).join(' ').replace(',', '');
     }
 
     function formatBirthDay(date: number | string) {
