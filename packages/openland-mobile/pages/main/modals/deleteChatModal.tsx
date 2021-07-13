@@ -10,7 +10,6 @@ import { formatError } from 'openland-y-forms/errorHandling';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { showBlanketModal } from 'openland-mobile/components/showBlanketModal';
 import { AlertBlanketBuilder } from 'openland-mobile/components/AlertBlanket';
-import { ZListItem } from 'openland-mobile/components/ZListItem';
 import { useText } from 'openland-mobile/text/useText';
 import { QueryCacheProvider } from '@openland/spacex';
 import { GQLClientContext, useClient } from 'openland-api/useClient';
@@ -26,7 +25,6 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
     const theme = React.useContext(ThemeContext);
     const client = useClient();
     const { t } = useText();
-    const [oneSide, setOneSide] = React.useState(true);
     const [state, setState] = React.useState<'initial' | 'done' | 'error'>('initial');
     const [isActionInProgress, setActionInProgress] = React.useState(false);
     const key = randomKey();
@@ -35,9 +33,9 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
     const overlayView = new SAnimatedShadowView(key + '--overlay', { opacity: 0 });
 
     const onDelete = React.useCallback(async () => {
-        await client.mutateChatDelete({ chatId: props.chatId, oneSide: oneSide });
+        await client.mutateChatDelete({ chatId: props.chatId, oneSide: true });
         props.hide();
-    }, [oneSide]);
+    }, []);
 
     const onSuccess = React.useCallback(async () => {
         setState('done');
@@ -115,17 +113,6 @@ const DeleteChatComponent = React.memo((props: DeleteChatComponentProps) => {
                             'Are you sure you want to delete conversation? This cannot be undone.',
                         )}
                     </Text>
-                </View>
-                <View style={{ paddingHorizontal: 8 }}>
-                    <ZListItem
-                        text={t('conversationDeleteBoth', {
-                            userName: props.userName,
-                            defaultValue: 'Delete for me and {{userName}}',
-                        })}
-                        checkmark={!oneSide}
-                        checkmarkType="checkbox"
-                        onPress={() => setOneSide(!oneSide)}
-                    />
                 </View>
                 <View
                     style={{
