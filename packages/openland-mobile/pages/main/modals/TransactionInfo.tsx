@@ -24,7 +24,7 @@ const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string,
     const value = !!props.status ? props.status.charAt(0).toUpperCase() + props.status.slice(1) : props.value;
     return (
         <View style={{ paddingLeft: props.secondary ? 32 : 16, paddingRight: 16, paddingVertical: 12, flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ ...TextStyles.Body, color: props.secondary ? theme.foregroundTertiary : theme.foregroundPrimary }}>{props.name}</Text>
+            <Text style={{ ...TextStyles.Body, color: props.secondary ? theme.foregroundTertiary : theme.foregroundPrimary }} allowFontScaling={false}>{props.name}</Text>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {props.status === 'success' ? (
                     <Image source={require('assets/ic-success-16.png')} style={iconStyle} />
@@ -34,7 +34,7 @@ const InfoItem = React.memo<{ name: string, secondary?: boolean, value?: string,
                     <Image source={require('assets/ic-pending-16.png')} style={iconStyle} />
                 ) : null
                 }
-                <Text style={{ ...TextStyles.Body, color: valueColor }}>{value}</Text>
+                <Text style={{ ...TextStyles.Body, color: valueColor }} allowFontScaling={false}>{value}</Text>
             </View>
         </View>
     );
