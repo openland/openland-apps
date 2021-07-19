@@ -17,16 +17,18 @@ import { OthersUsersWrapper } from './content/OthersUsersWrapper';
 import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span, SpanType } from 'openland-y-utils/spans/Span';
+import { TFn } from 'openland-mobile/text/useText';
+import { getServiceSpanTranslation } from 'openland-mobile/text/serviceMessages';
+import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
+
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
 import { StickerContent } from './content/StickerContent';
 import { StickerBox } from './content/StickerBox';
-import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 import { MetaInfoIndicator } from './content/MetaInfoIndicator';
 import { SenderContent } from './content/SenderContent';
 import { DonationContent } from './content/DonationContent';
 import { isAudio, isVideo } from 'openland-y-utils/mediaExtension';
 import { AudioContent } from './content/AudioContent';
-import { TFn } from 'openland-mobile/text/useText';
 
 export const paddedText = (edited?: boolean) => <ASText key="padded-text" fontSize={17}>{' ' + '\u00A0'.repeat(Platform.select({ default: edited ? 20 : 16, ios: edited ? 17 : 14 }))}</ASText>;
 
@@ -114,7 +116,8 @@ export let renderPreprocessedText = (
         } else if (span.type === 'emoji') {
             return <ASText key={'emoji'}>{children}</ASText>;
         } else if (span.type === 'text') {
-            return <ASText key={'text'}>{span.text}</ASText>;
+            const translatedMessage = message.serviceMetaData && getServiceSpanTranslation(message.serviceMetaData, span.textRaw);
+            return <ASText key={'text'}>{translatedMessage || span.textRaw}</ASText>;
         }
 
         return props.children ? <ASText key={'unknown'}>{props.children}</ASText> : null;

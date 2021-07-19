@@ -27,11 +27,18 @@ export const UserFollowersItem = React.memo<UserFollowerItemProps>((props) => {
     const client = getClient();
     const { t } = useText();
     const { id, name, photo, about, followersCount, followedByMe, hideButton } = props;
-    const counterStr = getCounterValue({ count: followersCount, suffix: t('shortThousand'), cutoff: 10000 });
+    const counterStr = getCounterValue({
+        count: followersCount,
+        suffix: t('shortThousand'),
+        cutoff: 10000,
+    });
     const subtitle = about || `${counterStr} ${t('follower', { count: followersCount })}`;
     const isMe = getMessenger().engine.user.id === id;
 
-    const onFollowPress = React.useCallback(() => client.mutateSocialFollow({ uid: id }), [id, client]);
+    const onFollowPress = React.useCallback(() => client.mutateSocialFollow({ uid: id }), [
+        id,
+        client,
+    ]);
     const onPress = React.useCallback(() => router!.push('ProfileUser', { id }), [id, router]);
 
     return (
@@ -39,19 +46,22 @@ export const UserFollowersItem = React.memo<UserFollowerItemProps>((props) => {
             <View style={{ flexDirection: 'row', paddingVertical: 6, alignItems: 'center' }}>
                 <ZAvatar id={id} photo={photo} size={'small'} />
                 <View style={{ marginLeft: 16, width: '100%', flexShrink: 1, paddingLeft: 5 }}>
-                    <Text style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}>{name}</Text>
+                    <Text
+                        style={{ ...TextStyles.Label1, color: theme.foregroundPrimary }}
+                        allowFontScaling={false}
+                    >
+                        {name}
+                    </Text>
                     <Text
                         style={{ ...TextStyles.Subhead, color: theme.foregroundTertiary }}
                         numberOfLines={1}
+                        allowFontScaling={false}
                     >
                         {subtitle}
                     </Text>
                 </View>
                 {!hideButton && !isMe && (
-                    <ZFollowButton
-                        isFollowing={followedByMe}
-                        onPress={onFollowPress}
-                    />
+                    <ZFollowButton isFollowing={followedByMe} onPress={onFollowPress} />
                 )}
             </View>
         </TouchableOpacity>

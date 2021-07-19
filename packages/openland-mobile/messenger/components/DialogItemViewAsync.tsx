@@ -16,6 +16,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { showDialogMenu } from './DialogMenu';
 import { useText } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
+import { getServiceStringTranslation } from 'openland-mobile/text/serviceMessages';
 
 const ASCounter = (props: { value: number | string; muted?: boolean; theme: ThemeGlobal }) => {
     const { t } = useText();
@@ -211,7 +212,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                                 {!isSavedMessages &&
                                                     item.showSenderName &&
                                                     `${item.sender}: `}
-                                                {item.fallback}
+                                                {item.isService ? getServiceStringTranslation(item.fallback) : item.fallback}
                                             </ASText>
                                         </ASFlex>
                                     )}
