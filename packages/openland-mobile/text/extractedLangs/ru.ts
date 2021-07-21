@@ -9,7 +9,7 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
   "accessDeniedGroupDescription": "Этого чата не существует или у вас нет разрешения на его просмотр",
   "accessSuspended": "Ваш доступ к “{{title}}” приостановлен",
   "accessSuspendedDescription": "Чтобы сохранить доступ к чату по подписке, вам необходимо завершить оплату",
-  "accountPrivacy": "Аккаунт и приватность",
+  "accountPrivacy": "Приватность",
   "active": "Активные",
   "add": "Добавить",
   "addCard": "Добавить карту",
