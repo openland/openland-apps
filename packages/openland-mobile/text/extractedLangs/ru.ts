@@ -537,6 +537,8 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
   "sendMessage": "Отправить сообщение",
   "sender": "Отправитель",
   "serviceMessages": "Сервисное сообщение",
+  "serviceAnd": " и ",
+  "serviceOthers": " других",
   "serviceMessagesDescription": "Выберите, какие сообщения получать",
   "serviceMessagesJoins": "Новый участник присоединился",
   "serviceMessagesLeaves": "Участник покинул чат",

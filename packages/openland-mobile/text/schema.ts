@@ -518,6 +518,8 @@ export type LocalizationSchema = {
     "sendMessage": string,
     "sender": string,
     "serviceMessages": string,
+    "serviceAnd": string,
+    "serviceOthers": string,
     "serviceMessagesDescription": string,
     "serviceMessagesJoins": string,
     "serviceMessagesLeaves": string,

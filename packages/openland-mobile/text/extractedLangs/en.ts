@@ -525,6 +525,8 @@ export const en: PrepareSchema<LocalizationSchema, '' | '_plural'> = {
   "sendMessage": "Send message",
   "sender": "Sender",
   "serviceMessages": "Service messages",
+  "serviceAnd": " and ",
+  "serviceOthers": " others",
   "serviceMessagesDescription": "Choose what messages to get",
   "serviceMessagesJoins": "New member joins",
   "serviceMessagesLeaves": "Member leaves",

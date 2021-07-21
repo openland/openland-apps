@@ -62,6 +62,14 @@ const SERVICE_MESSAGES = [
         text: ' changed the group photo',
         key: 'servicePhotoChanged',
     },
+    {
+        text: ' and ',
+        key: 'serviceAnd',
+    },
+    {
+        text: ' others',
+        key: 'serviceOthers',
+    },
 ];
 
 export function getServiceStringTranslation(serviceString: string) {
