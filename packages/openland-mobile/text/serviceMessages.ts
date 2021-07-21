@@ -1,4 +1,3 @@
-import { ServiceMessageMetadata } from 'openland-api/spacex.types';
 import { t } from './useText';
 import { LocalizedResources } from './schema';
 
@@ -64,19 +63,6 @@ const SERVICE_MESSAGES = [
         key: 'servicePhotoChanged',
     },
 ];
-
-export function getServiceSpanTranslation(
-    serviceMetaData: ServiceMessageMetadata,
-    textRaw?: string,
-) {
-    for (let message of SERVICE_MESSAGES) {
-        if (serviceMetaData.__typename === message.meta && textRaw === message.text) {
-            return t(message.key as LocalizedResources, textRaw);
-        }
-    }
-
-    return null;
-}
 
 export function getServiceStringTranslation(serviceString: string) {
     return SERVICE_MESSAGES.reduce((result, item) => {

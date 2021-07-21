@@ -18,7 +18,7 @@ import { openCalendar } from 'openland-mobile/utils/openCalendar';
 import { renderSpans } from 'openland-y-utils/spans/renderSpans';
 import { Span, SpanType } from 'openland-y-utils/spans/Span';
 import { TFn } from 'openland-mobile/text/useText';
-import { getServiceSpanTranslation } from 'openland-mobile/text/serviceMessages';
+import { getServiceStringTranslation } from 'openland-mobile/text/serviceMessages';
 import { ThemeGlobal } from 'openland-y-utils/themes/ThemeGlobal';
 
 import { EmojiOnlyContent } from './content/EmojiOnlyContent';
@@ -116,7 +116,7 @@ export let renderPreprocessedText = (
         } else if (span.type === 'emoji') {
             return <ASText key={'emoji'}>{children}</ASText>;
         } else if (span.type === 'text') {
-            const translatedMessage = message.serviceMetaData && getServiceSpanTranslation(message.serviceMetaData, span.textRaw);
+            const translatedMessage = message.isService && getServiceStringTranslation(span.textRaw || '');
             return <ASText key={'text'}>{translatedMessage || span.textRaw}</ASText>;
         }
 
