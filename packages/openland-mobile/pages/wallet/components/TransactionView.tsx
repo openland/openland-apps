@@ -38,7 +38,7 @@ export const TransactionView = (props: TransactionViewProps) => {
     const subtitleTime = dateTime.isToday ? dateTime.time : dateTime.date;
     const groupTitle = group ? `, ${group.title}` : '';
     const subtitleStatus = status !== 'success' ? `, ${status}` : '';
-    const subtitle = `${type}${groupTitle}\n${subtitleTime}${subtitleStatus}`;
+    const subtitle = `${type}${groupTitle}\n${subtitleTime}${subtitleStatus}`.replace(',,', ',');
 
     const complete = React.useCallback(() => {
         if (actionRequired && payment && payment.intent && router) {

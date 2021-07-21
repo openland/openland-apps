@@ -87,7 +87,7 @@ export const createDateTimeFormatter = ({
             return formatted;
         }
 
-        return formatted.split(' ').slice(0, -1).join(' ').replace(',', '');
+        return formatted.split(' ').slice(0, -1).join(' ');
     }
 
     function formatBirthDay(date: number | string) {
