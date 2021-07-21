@@ -21,6 +21,7 @@ import { getMessenger } from 'openland-mobile/utils/messenger';
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import { useText } from 'openland-mobile/text/useText';
 import { useSupportRoom } from 'openland-mobile/utils/useSupportRoom';
+import { getLocale } from 'openland-mobile/text/utils';
 
 export const handleGlobalInvitePress = async () => {
     const loader = Toast.loader();
@@ -62,6 +63,14 @@ const SettingsContent = ((props: PageProps) => {
                 await logout();
             })
             .show();
+    }, []);
+
+    const handleUserGuideClick = React.useCallback(() => {
+        if (getLocale() === 'ru') {
+            Linking.openURL('https://www.notion.so/openland/Openland-15ebef95a475409e909a8e50d60bee8a');
+        } else {
+            Linking.openURL('https://notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3');
+        }
     }, []);
 
     const scrollRef = React.useContext(ComponentRefContext);
@@ -165,7 +174,7 @@ const SettingsContent = ((props: PageProps) => {
                     leftIconColor={theme.tintGreen}
                     leftIcon={require('assets/ic-read-glyph-24.png')}
                     text={t('userGuide', 'User guide')}
-                    onPress={() => Linking.openURL('https://notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3')}
+                    onPress={handleUserGuideClick}
                 />
                 <ZListItem
                     leftIconColor={theme.tintCyan}
