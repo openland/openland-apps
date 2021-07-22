@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 });
 
 const isRusLocale = getLocale() === 'ru';
-const getOptions: () => SelectedMonth[] = () => moment().localeData().months().map((item, index) => ({ value: index, label: capitalize(item) }));
+const OPTIONS: SelectedMonth[] = moment().localeData().months().map((item, index) => ({ value: index, label: capitalize(item) }));
 
 type SelectedMonth = { value: number; label: string };
 
@@ -77,7 +77,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
             const fullYear = value.getFullYear() === EMPTY_YEAR ? undefined : String(value.getFullYear());
 
             setDay(String(value.getDate()));
-            setMonth(getOptions()[value.getMonth()]);
+            setMonth(OPTIONS[value.getMonth()]);
             setYear(fullYear);
         }
     }, [value]);
@@ -109,7 +109,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
 
         return t('enterValidDate', 'Please enter valid date');
     }, [day, month, year]);
-
+    
     return (
         <React.Suspense fallback={null}>
             <View style={{ flexDirection: 'row', marginHorizontal: noWrapper ? 0 : 16 }}>
@@ -127,7 +127,7 @@ export const ZDateInput = React.memo((props: ZDateInputProps) => {
                 <View style={{ flexGrow: 1 }}>
                     <ZSelectBasic
                         label={t('month', 'Month')}
-                        options={getOptions()}
+                        options={OPTIONS}
                         value={month?.value}
                         modalTitle={t('month', 'Month')}
                         invalid={getInvalid('month')}
