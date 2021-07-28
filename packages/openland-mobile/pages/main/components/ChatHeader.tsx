@@ -13,6 +13,7 @@ import { TextStyles, CompensationAlpha } from 'openland-mobile/styles/AppStyles'
 import { PremiumBadge } from 'openland-mobile/components/PremiumBadge';
 import Lottie from 'lottie-react-native';
 import { useText } from 'openland-mobile/text/useText';
+import { getTypingsTranslation } from 'openland-mobile/text/typings';
 
 const styles = StyleSheet.create({
     title: {
@@ -44,17 +45,7 @@ const SharedChatHeaderContent = React.memo((props: { room: RoomChat_room_SharedR
     if (typing) {
         accent = true;
 
-        // if (typing.indexOf('are typing') !== -1) {
-        //     subtitle = `${typing.slice(0, -13)} ${t('typing', 'typing')}`;
-        // }
-        //
-        // if (typing.indexOf('is typing') !== -1) {
-        //     subtitle = `${typing.slice(0, -12)} ${t('typing', 'typing')}`;
-        // }
-        //
-        // subtitle = typingType && typingsByType[typingType] || t('typing', 'typing');
-
-        subtitle = typing;
+        subtitle = getTypingsTranslation(typing);
     }
 
     const highlightGroup = room.kind === 'GROUP' && !room.isPremium;
