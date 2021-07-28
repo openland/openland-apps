@@ -57,7 +57,7 @@ const ComposeComponent = React.memo((props: PageProps) => {
     const { t } = useText();
     return (
         <>
-            <SHeader title={capitalize(t('newMessage', 'New message'))} hairline="hidden" />
+            <SHeader title={capitalize(t('newMessage', { count: 1, defaultValue: 'New message' }))} hairline="hidden" />
             <SSearchControler
                 searchRender={(p) => (
                     <>
