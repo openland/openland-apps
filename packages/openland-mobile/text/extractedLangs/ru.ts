@@ -655,7 +655,7 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
   "typing": "печатает",
   "typingFile": "отправляет файл",
   "typingPhoto": "отправляет фото",
-  "typingSticker": "прикрепляет стикер",
+  "typingSticker": "выбирает стикер",
   "typingVideo": "загружает видео",
   "unblockPerson": "Разблокировать пользователя",
   "unfollow": "Отписаться",

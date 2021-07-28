@@ -28,7 +28,7 @@ const TYPINGS = [
     },
     {
         text: 'is uploading a video',
-        key: 'ispUploadingAVideo',
+        key: 'isUploadingAVideo',
     },
     {
         text: 'are typing',
@@ -48,7 +48,7 @@ const TYPINGS = [
     },
     {
         text: 'are uploading a video',
-        key: 'arepUploadingAVideo',
+        key: 'areUploadingAVideo',
     },
 ];
 

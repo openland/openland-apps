@@ -17,6 +17,7 @@ import { showDialogMenu } from './DialogMenu';
 import { useText } from 'openland-mobile/text/useText';
 import DateTimeFormatter from 'openland-y-runtime/DateTimeFormatter';
 import { getServiceStringTranslation } from 'openland-mobile/text/serviceMessages';
+import { getTypingsTranslation } from 'openland-mobile/text/typings';
 
 const ASCounter = (props: { value: number | string; muted?: boolean; theme: ThemeGlobal }) => {
     const { t } = useText();
@@ -229,7 +230,7 @@ const DialogItemViewAsyncRender = React.memo<DialogItemViewAsyncProps & { theme:
                                                 color={theme.accentPrimary}
                                                 numberOfLines={2}
                                             >
-                                                {item.typing}...
+                                                {getTypingsTranslation(item.typing)}...
                                             </ASText>
                                         </ASFlex>
                                     )}
