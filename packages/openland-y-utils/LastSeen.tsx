@@ -50,7 +50,7 @@ class LastSeenManagerImpl {
 
 const LastSeenManager = new LastSeenManagerImpl();
 
-export const useLastSeen = (user: LastSeenUser | null) => {
+export const useLastSeen = (user: LastSeenUser | null): [string | null, boolean | null] => {
     const isBot = user && user.isBot;
     const isOnline = user && user.online;
     const accentColor = isBot || isOnline;

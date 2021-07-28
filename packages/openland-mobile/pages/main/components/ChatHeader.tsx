@@ -194,6 +194,7 @@ const PrivateChatHeaderContent = React.memo((props: { room: RoomChat_room_Privat
 
         subtitle = typingType && typingsByType[typingType] || t('typing', 'typing');
     }
+    subtitle = subtitle && subtitle.replace('online', t('online', 'online'));
 
     const isSavedMessages = room.user.id === getMessenger().engine.user.id;
 
