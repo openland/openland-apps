@@ -159,13 +159,13 @@ export const createDateTimeFormatter = ({
                     return lastSeenTwoDays;
                 }
                 return lastSeenYesterday;
+            } else if (delta < oneMinute) {
+                return justNow;
             } else if (delta < oneDay) {
                 if (now.getDate() === dt.getDate() + 1) {
                     return lastSeenYesterday;
                 }
                 return lastSeenDefault + ' ' + moment(time).fromNow();
-            } else if (delta < oneMinute) {
-                return justNow;
             } else {
                 return lastSeenDefault + ' ' + formatDate(time);
             }

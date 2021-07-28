@@ -737,7 +737,7 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
     "shortMinute": "мин",
     "shortHour": "ч",
     "shortDay": "д",
-    "justNow": "прямо сейчас",
+    "justNow": "был(а) только что",
     "lastSeenYesterday": "был(а) в сети вчера",
     "lastSeenTwoDays": "был(а) в сети два дня назад",
     "lastSeenLongTime": "нет в сети",
