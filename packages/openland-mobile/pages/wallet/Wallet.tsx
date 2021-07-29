@@ -70,6 +70,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                         size="large"
                         flexGrow={1}
                         marginRight={16}
+                        flexBasis={0}
                         style="secondary"
                         onPress={onFaqPress}
                     />
@@ -77,7 +78,7 @@ const WalletComponent = React.memo<PageProps>((props) => {
                         title={t('paymentsHelp', 'Payments help')}
                         size="large"
                         flexGrow={1}
-                        flexShrink={1}
+                        flexBasis={0}
                         style="secondary"
                         onPress={navigateToSupport}
                     />
