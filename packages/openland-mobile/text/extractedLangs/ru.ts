@@ -436,7 +436,7 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
   "paymentMethods": "Способы оплаты",
   "payments": "Стоимость",
   "paymentsFaq": "FAQ по оплате",
-  "paymentsHelp": "Помощь с оплатой",
+  "paymentsHelp": "Помощь",
   "pending": "Ожидание",
   "period": "Период",
   "periodLongPerMonth": "в месяц",
