@@ -435,7 +435,7 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
   "paymentMethodUpdateDescription": "Обновите способ оплаты, чтобы завершить ранее неудачные транзакции и совершить новые покупки",
   "paymentMethods": "Способы оплаты",
   "payments": "Стоимость",
-  "paymentsFaq": "FAQ по оплате",
+  "paymentsFaq": "FAQ",
   "paymentsHelp": "Помощь",
   "pending": "Ожидание",
   "period": "Период",
