@@ -10,7 +10,7 @@ import { debounce } from 'openland-y-utils/timer';
 import { Conference_conference_parent, Conference_conference_peers, VoiceChatParticipantStatus } from 'openland-api/spacex.types';
 import { MediaSessionManager } from 'openland-engines/media/MediaSessionManager';
 import { VideoComponent } from './ScreenShareModal';
-import { XView, XViewRouteContext, XViewRouterContext } from 'react-mental';
+import { XView, XViewRouteContext } from 'react-mental';
 import { TextLabel1, TextStyles, TextSubhead } from 'openland-web/utils/TextStyles';
 import { UIconButton } from 'openland-web/components/unicorn/UIconButton';
 import { CallsEngine } from 'openland-engines/CallsEngine';
@@ -510,7 +510,6 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
     let messenger = React.useContext(MessengerContext);
     let state = props.mediaSession.state.useValue();
     const selfStatus = voiceChat.me?.status;
-    const router = React.useContext(XViewRouterContext)!;
     const route = React.useContext(XViewRouteContext)!;
     const tabRouter = useTabRouter();
     const isCurrentRoute = route.path.includes(`/room/${props.id}`);
