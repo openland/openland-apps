@@ -519,9 +519,8 @@ const VoiceChatFloatingComponent = React.memo((props: { id: string, mediaSession
         messenger.voiceChat.leave();
     }, [isCurrentRoute]);
     const showCall = React.useCallback(() => {
-        tabRouter.setTab(0);
         setTimeout(() => {
-            router.navigate(`/room/${props.id}`);
+            tabRouter.router.navigate(`/room/${props.id}`);
         }, 20);
     }, []);
 
