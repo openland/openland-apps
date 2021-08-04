@@ -5,6 +5,9 @@ import { ZAvatar } from 'openland-mobile/components/ZAvatar';
 import { ZListItemBase } from 'openland-mobile/components/ZListItemBase';
 import { ThemeContext } from 'openland-mobile/themes/ThemeContext';
 import { SuggestionsItemName } from '../Suggestions';
+import { useText } from 'openland-mobile/text/useText';
+import { capitalize } from 'openland-y-utils/capitalize';
+import { LocalizedResources } from 'openland-mobile/text/schema';
 
 export type MentionViewT = ChatMentionSearch_mentions_items | { __typename: 'AllMention' };
 
@@ -16,8 +19,8 @@ interface MentionViewProps {
 
 export const MentionView = React.memo((props: MentionViewProps) => {
     const theme = React.useContext(ThemeContext);
+    const { t } = useText();
     const { mention, onPress, isChannel } = props;
-    const chatType = isChannel ? 'channel' : 'group';
 
     return (
         <ZListItemBase
@@ -27,13 +30,16 @@ export const MentionView = React.memo((props: MentionViewProps) => {
             underlayColor={theme.backgroundTertiaryTrans}
         >
             <View style={{ flexGrow: 1, flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ paddingHorizontal: 15, height: 40, alignItems: 'center', justifyContent: 'center' }}>
+                <View
+                    style={{
+                        paddingHorizontal: 15,
+                        height: 40,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
                     {mention.__typename === 'MentionSearchUser' && (
-                        <ZAvatar
-                            photo={mention.user.photo}
-                            size="x-small"
-                            id={mention.user.id}
-                        />
+                        <ZAvatar photo={mention.user.photo} size="x-small" id={mention.user.id} />
                     )}
                     {mention.__typename === 'MentionSearchOrganization' && (
                         <ZAvatar
@@ -43,15 +49,25 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                         />
                     )}
                     {mention.__typename === 'MentionSearchSharedRoom' && (
-                        <ZAvatar
-                            photo={mention.room.photo}
-                            size="x-small"
-                            id={mention.room.id}
-                        />
+                        <ZAvatar photo={mention.room.photo} size="x-small" id={mention.room.id} />
                     )}
                     {mention.__typename === 'AllMention' && (
-                        <View style={{ alignItems: 'center', justifyContent: 'center', width: 24, height: 24 }}>
-                            <Image source={require('assets/ic-channel-24.png')} style={{ tintColor: theme.foregroundSecondary, width: 24, height: 24 }} />
+                        <View
+                            style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                width: 24,
+                                height: 24,
+                            }}
+                        >
+                            <Image
+                                source={require('assets/ic-channel-24.png')}
+                                style={{
+                                    tintColor: theme.foregroundSecondary,
+                                    width: 24,
+                                    height: 24,
+                                }}
+                            />
                         </View>
                     )}
                 </View>
@@ -67,23 +83,31 @@ export const MentionView = React.memo((props: MentionViewProps) => {
                         <SuggestionsItemName
                             theme={theme}
                             name={mention.organization.name}
-                            description={mention.organization.isCommunity ? 'Community' : 'Organization'}
                             featured={mention.organization.featured}
+                            description={
+                                mention.organization.isCommunity
+                                    ? capitalize(t('community', 'community'))
+                                    : capitalize(t('organization', 'organization'))
+                            }
                         />
                     )}
                     {mention.__typename === 'MentionSearchSharedRoom' && (
                         <SuggestionsItemName
                             theme={theme}
                             name={mention.room.title}
-                            description={mention.room.isChannel ? 'Channel' : 'Group'}
                             featured={mention.room.featured}
+                            description={
+                                mention.room.isChannel
+                                    ? capitalize(t('channel', 'channel'))
+                                    : capitalize(t('group_0' as LocalizedResources, 'group'))
+                            }
                         />
                     )}
                     {mention.__typename === 'AllMention' && (
                         <SuggestionsItemName
                             theme={theme}
                             name="@All"
-                            description={`Notify everyone in this ${chatType}`}
+                            description={isChannel ? t('notifyAllInThisChannel') : t('notifyAllInThisGroup')}
                         />
                     )}
                 </View>

@@ -85,7 +85,7 @@ const StartConversationComponent = React.memo((props: PageProps) => {
         <>
             <SScrollView style={{ justifyContent: 'flex-start', alignContent: 'center' }}>
                 <Text style={{ fontSize: 34, marginHorizontal: 16, fontWeight: FontStyles.Weight.Bold, color: theme.foregroundPrimary, marginBottom: 8 }} >
-                    {t('getHelp', 'Get help from Openland community')}
+                    {t('getHelp', 'Get help')}
                 </Text>
                 <Text style={{ fontSize: 18, marginBottom: 20, marginHorizontal: 16, color: theme.foregroundPrimary, marginTop: theme.type === 'Light' ? 0 : 8 }}>
                     {t('shareChallenges', 'Choose a chat and share your challenges')}

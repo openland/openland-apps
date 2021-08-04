@@ -49,6 +49,11 @@ const SERVICE_MESSAGES = [
     },
     {
         meta: 'KickServiceMetadata',
+        text: 'you were kicked',
+        key: 'serviceYouWereKicked',
+    },
+    {
+        meta: 'KickServiceMetadata',
         text: ' left the group',
         key: 'serviceUserLeft',
     },
@@ -69,6 +74,10 @@ const SERVICE_MESSAGES = [
     {
         text: ' others',
         key: 'serviceOthers',
+    },
+    {
+        text: 'joined Openland',
+        key: 'serviceJoinedOpenland',
     },
 ];
 

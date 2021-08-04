@@ -229,7 +229,7 @@ export const showAttachMenu = (fileCallback?: (
 
     if (donationCb && Platform.OS !== 'ios') {
         builder.action(Platform.select({
-            ios: t('attachDontaionIOS', 'Make donation'),
+            ios: t('attachDonationIOS', 'Make donation'),
             default: t('attachDonationAndroid', 'Donation'),
         }), () => {
             donationCb();

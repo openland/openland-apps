@@ -45,7 +45,7 @@ export const NotificationCenterEmpty = React.memo(() => {
                 }}
                 allowFontScaling={false}
             >
-                {t('noNotificationsDescripiton', 'Comments in threads you are involved in will be right here')}
+                {t('noNotificationsDescription', 'Comments in threads you are involved in will be right here')}
             </Text>
         </ASSafeAreaView>
     );
