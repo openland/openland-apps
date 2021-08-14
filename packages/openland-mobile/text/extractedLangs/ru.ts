@@ -582,7 +582,7 @@ export const ru: PrepareSchema<LocalizationSchema, '_0' | '_1' | '_2'> = {
   "sharedMediaEmptyLinks": "Пока нет ссылок",
   "sharedMediaEmptyDescription": "{{mediaType}}, которые вы будете отправлять и получать в этом чате, появятся здесь", // которое, который, которая - зависит от mediaType
   "sharedMediaTitle": "Медиа, файлы, ссылки",
-  "shortThousand": "Т",
+  "shortThousand": "K",
   "shortname": "Короткое имя",
   "shortnameDescription": "Эта ссылка открывает чат с вами:\nopenland.com/{{path}}",
   "shortnameUserDescription": "Вы можете выбрать имя пользователя в Openland.\nДругие люди смогут найти вас по этому имени и упомянуть вас в чатах.\n\nВы можете использовать a-z, 0-9 и подчеркивания.\nМинимальная длина составляет {{minLength}} символа.\n\n{{username}}",
