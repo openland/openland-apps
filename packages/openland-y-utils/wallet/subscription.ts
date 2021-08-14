@@ -30,17 +30,18 @@ export const displaySubscriptionDate = (date: Date) => {
 
 const generateSubTitle = (expires: Date, renews: Date, state: WalletSubscriptionState) => {
     const date = displaySubscriptionDate(expires);
+    const renewsFormatted = displaySubscriptionDate(expires);
 
     const variants: { [key in WalletSubscriptionState]: string } = t
         ? {
-              [WalletSubscriptionState.STARTED]: t('subscriptionsStarted', { date: renews, defaultValue: `Next bill on {{date}}` }),
+              [WalletSubscriptionState.STARTED]: t('subscriptionsStarted', { date: renewsFormatted, defaultValue: `Next bill on {{date}}` }),
               [WalletSubscriptionState.GRACE_PERIOD]: t('subscriptionsPaymentFailed', 'Payment failed'),
               [WalletSubscriptionState.RETRYING]: t('subscriptionsPaymentFailed', 'Payment failed'),
               [WalletSubscriptionState.CANCELED]: t('subscriptionsCanceled', { date, defaultValue: `Expires on {{date}}` }),
               [WalletSubscriptionState.EXPIRED]: t('subscriptionsExpired', { date, defaultValue: `Expired on {{date}}` }),
           }
         : {
-              [WalletSubscriptionState.STARTED]: `Next bill on ${renews}`,
+              [WalletSubscriptionState.STARTED]: `Next bill on ${renewsFormatted}`,
               [WalletSubscriptionState.GRACE_PERIOD]: `Payment failed`,
               [WalletSubscriptionState.RETRYING]: `Payment failed`,
               [WalletSubscriptionState.CANCELED]: `Expires on ${date}`,
