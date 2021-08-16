@@ -69,7 +69,7 @@ const SettingsContent = ((props: PageProps) => {
         if (getLocale() === 'ru') {
             Linking.openURL('https://www.notion.so/openland/Openland-15ebef95a475409e909a8e50d60bee8a');
         } else {
-            Linking.openURL('https://notion.so/openland/Openland-User-Guide-2af553fb409a42c296651e708d5561f3');
+            Linking.openURL('https://openland.notion.site/Openland-User-Guide-1d1276af96184bec932f06e329c12216');
         }
     }, []);
 
