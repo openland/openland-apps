@@ -30,20 +30,20 @@ function showFilters(selected: 'voice' | 'explore', onSelect: (d: 'voice' | 'exp
     const actionSheet = ActionSheet.builder();
     actionSheet.cancelable(false);
     actionSheet.action(
-        t('rooms', 'Rooms'),
-        () => onSelect('voice'),
-        false,
-        require('assets/ic-room-24.png'),
-        undefined,
-        selected === 'voice',
-    );
-    actionSheet.action(
         t('discover', 'Discover'),
         () => onSelect('explore'),
         false,
         require('assets/ic-discover-24.png'),
         undefined,
         selected === 'explore',
+    );
+    actionSheet.action(
+        t('rooms', 'Rooms'),
+        () => onSelect('voice'),
+        false,
+        require('assets/ic-room-24.png'),
+        undefined,
+        selected === 'voice',
     );
     actionSheet.show(true);
 }
@@ -101,7 +101,7 @@ const RoomFeedItem = React.memo((props: { room: VoiceChatShort, theme: ThemeGlob
 const RoomsFeedPage = React.memo((props: PageProps) => {
     const client = useClient();
     const { t } = useText();
-    const [page, setPage] = React.useState<'voice' | 'explore'>('voice');
+    const [page, setPage] = React.useState<'voice' | 'explore'>('explore');
     const voiceChats = useVoiceChatsFeed();
     const theme = useTheme();
     const router = React.useContext(SRouterContext)!;

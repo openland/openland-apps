@@ -208,6 +208,15 @@ const HomeMenu = (props: {
     let ms = messenger.calls.useCurrentSession();
 
     res.item({
+        title: 'Discover',
+        icon: <IcDiscover />,
+        action: () => {
+            props.setActivePage('Discover');
+            router.navigate('/discover', true);
+        },
+        selected: props.activePage === 'Discover',
+    });
+    res.item({
         title: 'Rooms',
         icon: <IcRooms />,
         action: () => {
@@ -220,21 +229,13 @@ const HomeMenu = (props: {
         },
         selected: props.activePage === 'Rooms',
     });
-    res.item({
-        title: 'Discover',
-        icon: <IcDiscover />,
-        action: () => {
-            props.setActivePage('Discover');
-            router.navigate('/discover', true);
-        },
-        selected: props.activePage === 'Discover',
-    });
+
     return res.build(props.ctx, 240);
 };
 
 export const RoomsFragment = React.memo(() => {
     const voiceChats = useVoiceChatsFeed();
-    const [activeHomePage, setActiveHomePage] = React.useState<ActivePageType>('Rooms');
+    const [activeHomePage, setActiveHomePage] = React.useState<ActivePageType>('Discover');
     const router = React.useContext(XRouterContext)!;
 
     const [menuVisible, menuShow] = usePopper(
