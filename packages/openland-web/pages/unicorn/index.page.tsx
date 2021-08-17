@@ -30,9 +30,9 @@ const Unicorn = React.memo(() => {
                           {
                               icon: <RoomsIcon />,
                               iconActive: <RoomsActiveIcon />,
-                              path: '/rooms',
+                              path: '/discover',
                               component: <RoomsFragment />,
-                              caption: 'Rooms',
+                              caption: 'Discover',
                               defaultPage: true,
                           },
                           {
