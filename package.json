@@ -221,7 +221,7 @@
         "sdp-transform": "2.14.0",
         "simplebar": "^2.6.1",
         "subscriptions-transport-ws": "^0.9.14",
-        "three": "^0.107.0",
+        "three": "^0.137.0",
         "tlds": "^1.203.1",
         "tmp": "^0.1.0",
         "ts-essentials": "^7.0.1",
